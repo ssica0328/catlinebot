@@ -1,0 +1,10 @@
+line-bot-sdk
+bsd
+flask
+pymongo
+datetime
+pandas
+SnowNLP
+emoji
+pyshorteners
+scipy
