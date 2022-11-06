@@ -1,0 +1,1 @@
+cd python app.py
