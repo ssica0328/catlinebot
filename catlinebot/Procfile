@@ -1,2 +1,2 @@
-web: gunicorn main:app –log-file -
+web: python manage.py
 clock: python clock.py
