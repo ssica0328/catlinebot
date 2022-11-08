@@ -1,3 +1,4 @@
+emoji
 Django
 bsd
 flask
@@ -5,7 +6,6 @@ pymongo
 datetime
 pandas
 SnowNLP
-emoji
 pyshorteners
 scipy
 gunicorn
