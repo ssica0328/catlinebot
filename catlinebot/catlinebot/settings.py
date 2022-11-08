@@ -27,7 +27,7 @@ line_channel_secret='64083133f70d649202a7d257fc334cc0'
 SECRET_KEY = 'django-insecure-fpwpsvq#dyt(pb3r92y8c7-y*anr)5%n%1rl!4#hn339*iyj^s'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
 ALLOWED_HOSTS = []
 
@@ -123,7 +123,6 @@ USE_TZ = True
 STATIC_URL = '/static/'
 STATICILES_DIRS=[os.path.join(BASE_DIR,'static')]
 
-DEBUG=False
 ALLOWED_HOSTS=['*']
 
 # Default primary key field type
