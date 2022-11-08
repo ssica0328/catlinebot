@@ -1,12 +1,1 @@
 emoji
-Django
-bsd
-flask
-pymongo
-datetime
-pandas
-SnowNLP
-pyshorteners
-scipy
-gunicorn
-line-bot-sdk
