@@ -9,4 +9,4 @@ SnowNLP
 pyshorteners
 scipy
 gunicorn
-django
+Django
