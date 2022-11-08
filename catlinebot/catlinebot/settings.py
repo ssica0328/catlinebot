@@ -123,7 +123,7 @@ USE_TZ = True
 STATIC_URL = '/static/'
 STATICILES_DIRS=[os.path.join(BASE_DIR,'static')]
 
-DEBUG=True
+DEBUG=False
 ALLOWED_HOSTS=['*']
 
 # Default primary key field type
