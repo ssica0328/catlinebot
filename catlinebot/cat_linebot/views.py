@@ -34,4 +34,5 @@ def callback(request):
 
         return HttpResponse()
     else:
+
         return HttpResponseBadRequest()
