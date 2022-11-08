@@ -20,5 +20,5 @@ from cat_linebot import views
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('callback', views.callback),
+    path('cat_linebot/', views.callback),
 ]
