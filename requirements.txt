@@ -1,5 +1,4 @@
 Django
-line-bot-sdk
 bsd
 flask
 pymongo
@@ -10,3 +9,4 @@ emoji
 pyshorteners
 scipy
 gunicorn
+line-bot-sdk
