@@ -1,7 +1,7 @@
 emoji
 line-bot-sdk
 datetime
-bsd
+bs4
 flask
 pymongo
 pandas
