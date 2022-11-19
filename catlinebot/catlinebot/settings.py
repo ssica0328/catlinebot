@@ -22,9 +22,9 @@ DEBUG = True
 # See https://docs.djangoproject.com/en/4.1/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-line_channel_access_token='21KPifSHY9s6YQxje54YYwIQc7Yh1mLT3K6hgQM78REt/CYb7mTGZJnrwEZyvverGlxKXY8c1IGyRgMbo2XuT44LD7MlDWuYl4FjTuf/Rrm9Qco/PUAT58coQXrU4RWfPyn0r5HaiKtqJy1hpLuWUAdB04t89/1O/w1cDnyilFU='
+LINE_CHANNEL_ACCESS_TOKEN = '21KPifSHY9s6YQxje54YYwIQc7Yh1mLT3K6hgQM78REt/CYb7mTGZJnrwEZyvverGlxKXY8c1IGyRgMbo2XuT44LD7MlDWuYl4FjTuf/Rrm9Qco/PUAT58coQXrU4RWfPyn0r5HaiKtqJy1hpLuWUAdB04t89/1O/w1cDnyilFU='
 
-line_channel_secret='64083133f70d649202a7d257fc334cc0'
+LINE_CHANNEL_SECRET = '64083133f70d649202a7d257fc334cc0'
 SECRET_KEY = 'django-insecure-fpwpsvq#dyt(pb3r92y8c7-y*anr)5%n%1rl!4#hn339*iyj^s'
 
 # SECURITY WARNING: don't run with debug turned on in production!
