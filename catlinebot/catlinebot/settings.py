@@ -16,7 +16,6 @@ import os
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = BASE_DIR = os.path.dirname(os.path.dirname(__file__))
 
-DEBUG = True
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/4.1/howto/deployment/checklist/
@@ -28,9 +27,9 @@ LINE_CHANNEL_SECRET = '64083133f70d649202a7d257fc334cc0'
 SECRET_KEY = 'django-insecure-fpwpsvq#dyt(pb3r92y8c7-y*anr)5%n%1rl!4#hn339*iyj^s'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False
+DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['*']
 
 
 # Application definition
