@@ -65,11 +65,20 @@ def handle_message(event):
             User_Info.objects.create(uid=user_id, name=display_name, pic_url=picture_url, mtext=text, mdt=now, points=0)
             message.append(TextMessage(text='會員資料新增完畢'))
         elif User_Info.objects.filter(uid=user_id).exists()==True:
-            message.append(TextMessage(text='會員資料新增完畢'))
+            message.append(TextMessage(text='已建立過會員資料'))
             user_info = User_Info.objects.filter(uid=user_id)
             for user in user_info:
                 info = f'UID={user.uid}\nNAME={user.name}'
             message.append(TextSendMessage(text=info))
         line_api.reply_message(event.reply_token, message)
+    elif '開始' in text:
+        buttons_template = TemplateSendMessage(
+        alt_text='加入會員',
+        template=ButtonsTemplate(
+            title='其他文件',
+            text='點選下方按鈕以建立會員資料',
+            thumbnail_image_url='https://imgur.com/a/hngUDVJ.jpg',
+            actions=[MessageTemplateAction(label='加入會員',text='新增會員資料')]))
+        line_api.reply_message(event.reply_token, buttons_template)
     else:
         line_api.reply_message(event.reply_token,TextMessage(text=text))
