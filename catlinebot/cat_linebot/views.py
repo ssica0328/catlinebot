@@ -13,6 +13,8 @@ from linebot.exceptions import InvalidSignatureError, LineBotApiError
 #其他
 import time
 
+from cat_linebot.models import *
+
 line_api = LineBotApi(channel_access_token=settings.LINE_CHANNEL_ACCESS_TOKEN)
 parser = WebhookParser(channel_secret=settings.LINE_CHANNEL_SECRET)
 
@@ -41,7 +43,8 @@ def callback(request):
 def handle_message(event):
     #得到user資訊
     display_name = line_api.get_profile(event.source.user_id).display_name
-    userId = line_api.get_profile(event.source.user_id).user_id
+    user_id = line_api.get_profile(event.source.user_id).user_id
+    picture_url = line_api.get_profile(event.source.user_id).picture_url
     now = time.ctime()
 
     #分辨型別為text
@@ -54,4 +57,19 @@ def handle_message(event):
         return 200
     print(f'(text){display_name}:{text}\n{now}')
 
-    line_api.reply_message(event.reply_token,TextMessage(text=text))
+    #訊息
+    message = []
+
+    if '新增會員資料' in text:
+        if User_Info.objects.filter(uid=user_id).exists()==False:
+            User_Info.objects.create(uid=user_id, name=display_name, pic_url=picture_url, text=text, mdt=now, points=0)
+            message.append(TextMessage(text='會員資料新增完畢'))
+        elif User_Info.objects.filter(uid=user_id).exists()==True:
+            message.append(TextMessage(text='會員資料新增完畢'))
+            user_info = User_Info.objects.filter(uid=user_id)
+            for user in user_info:
+                info = f'UID={user.uid}\nNAME={user.name}'
+            message.append(TextSendMessage(text=info))
+        line_api.reply_message(event.reply_token, message)
+    else:
+        line_api.reply_message(event.reply_token,TextMessage(text=text))
