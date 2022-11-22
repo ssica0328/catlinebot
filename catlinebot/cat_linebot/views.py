@@ -62,7 +62,7 @@ def handle_message(event):
 
     if '新增會員資料' in text:
         if User_Info.objects.filter(uid=user_id).exists()==False:
-            User_Info.objects.create(uid=user_id, name=display_name, pic_url=picture_url, text=text, mdt=now, points=0)
+            User_Info.objects.create(uid=user_id, name=display_name, pic_url=picture_url, mtext=text, mdt=now, points=0)
             message.append(TextMessage(text='會員資料新增完畢'))
         elif User_Info.objects.filter(uid=user_id).exists()==True:
             message.append(TextMessage(text='會員資料新增完畢'))
