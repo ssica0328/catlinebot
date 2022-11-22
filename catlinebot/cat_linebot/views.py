@@ -80,5 +80,31 @@ def handle_message(event):
             thumbnail_image_url='https://imgur.com/a/hngUDVJ.jpg',
             actions=[MessageTemplateAction(label='加入會員',text='新增會員資料')]))
         line_api.reply_message(event.reply_token, buttons_template)
+    elif '分數' in text:
+        if '查看' in text:
+            if User_Info.objects.filter(uid=user_id).exists()==True:
+                user_info = User_Info.objects.filter(uid=user_id)
+                for user in user_info:
+                    points = int(user.points)
+                message.append(TextSendMessage(text=f'您的分數是：{points}分'))
+            else:
+                message.append(TextSendMessage(text=f'您尚未建立會員，請輸入"開始"加入會員'))
+            line_api.reply_message(event.reply_token, message)
+        elif '歸零' in text:
+            if User_Info.objects.filter(uid=user_id).exists()==True:
+                User_Info.objects.filter(uid=user_id).update(points=int(0))
+                message.append(TextSendMessage(text=f'您已成功將分數歸零'))
+            else:
+                message.append(TextSendMessage(text=f'您尚未建立會員，請輸入"開始"加入會員'))
+            line_api.reply_message(event.reply_token, message)
+        elif '+1' in text:
+            if User_Info.objects.filter(uid=user_id).exists()==True:
+                user_info = User_Info.objects.filter(uid=user_id)
+                for user in user_info:
+                    points = int(user.points)
+                points += 1
+                User_Info.objects.filter(uid=user_id).update(points=points)
+            else:
+                message.append(TextSendMessage(text=f'您尚未建立會員，請輸入"開始"加入會員'))
     else:
         line_api.reply_message(event.reply_token,TextMessage(text=text))
