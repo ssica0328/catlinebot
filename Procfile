@@ -1,1 +1,1 @@
-web: gunicorn --pythonpath catlinebot catlinebot.wsgi
+web: gunicorn --pythonpath catlinebot catlinebot.wsgi --log-file -

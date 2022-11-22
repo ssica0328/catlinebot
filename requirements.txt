@@ -10,3 +10,5 @@ pyshorteners
 scipy
 gunicorn
 Django
+dj-database-url
+dj-static
