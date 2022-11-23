@@ -69,8 +69,9 @@ def handle_message(event):
             user_info = User_Info.objects.filter(uid=user_id)
             for user in user_info:
                 info = f'UID={user.uid}\nNAME={user.name}'
-            message.append(TextSendMessage(text=info))
+            message.append(TextMessage(text=info))
         line_api.reply_message(event.reply_token, message)
+
     elif '開始' in text:
         buttons_template = TemplateSendMessage(
         alt_text='加入會員',
@@ -80,22 +81,23 @@ def handle_message(event):
             thumbnail_image_url='https://imgur.com/a/hngUDVJ.jpg',
             actions=[MessageTemplateAction(label='加入會員',text='新增會員資料')]))
         line_api.reply_message(event.reply_token, buttons_template)
+
     elif '分數' in text:
         if '查看' in text:
             if User_Info.objects.filter(uid=user_id).exists()==True:
                 user_info = User_Info.objects.filter(uid=user_id)
                 for user in user_info:
                     points = int(user.points)
-                message.append(TextSendMessage(text=f'您的分數是：{points}分'))
+                message.append(TextMessage(text=f'您的分數是：{points}分'))
             else:
-                message.append(TextSendMessage(text=f'您尚未建立會員，請輸入"開始"加入會員'))
+                message.append(TextMessage(text=f'您尚未建立會員，請輸入"開始"加入會員'))
             line_api.reply_message(event.reply_token, message)
         elif '歸零' in text:
             if User_Info.objects.filter(uid=user_id).exists()==True:
                 User_Info.objects.filter(uid=user_id).update(points=int(0))
-                message.append(TextSendMessage(text=f'您已成功將分數歸零'))
+                message.append(TextMessage(text=f'您已成功將分數歸零'))
             else:
-                message.append(TextSendMessage(text=f'您尚未建立會員，請輸入"開始"加入會員'))
+                message.append(TextMessage(text=f'您尚未建立會員，請輸入"開始"加入會員'))
             line_api.reply_message(event.reply_token, message)
         elif '+1' in text:
             if User_Info.objects.filter(uid=user_id).exists()==True:
@@ -104,7 +106,27 @@ def handle_message(event):
                     points = int(user.points)
                 points += 1
                 User_Info.objects.filter(uid=user_id).update(points=points)
+                message.append(TextMessage(text=f'分數成功+1'))
             else:
-                message.append(TextSendMessage(text=f'您尚未建立會員，請輸入"開始"加入會員'))
+                message.append(TextMessage(text=f'您尚未建立會員，請輸入"開始"加入會員'))
+            line_api.reply_message(event.reply_token, message)
+
+    elif '每日一問' in text:
+        random_question = random_exam.objects.filter(num = 0)
+        for Q1 in random_question:
+            num = Q1.num
+            question = Q1.question
+            op1 = Q1.op1
+            op2 = Q1.op2
+            op3 = Q1.op3
+            ans = int(Q1.ans)
+        message.append(TextMessage(text=f'每日一問：\n{question}\nA.{op1}\nB.{op2}\nC.{op3}\n'))
+        message.append(TextSendMessage(text="請選擇", quick_reply=QuickReply(
+                    items=[
+                        QuickReplyButton(action=PostbackAction(label="A", data=f"{1-ans}")),
+                        QuickReplyButton(action=PostbackAction(label="B", data=f"{2-ans}")),
+                        QuickReplyButton(action=PostbackAction(label="C", data=f"{3-ans}")),
+                        ])))
+        line_api.reply_message(event.reply_token, message)
     else:
         line_api.reply_message(event.reply_token,TextMessage(text=text))
