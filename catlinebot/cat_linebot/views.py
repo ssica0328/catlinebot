@@ -49,7 +49,7 @@ def handle_postback(event):
     picture_url = line_api.get_profile(event.source.user_id).picture_url
     now = time.ctime()
     
-    data = event.postback.data
+    data = int(event.postback.data)
     print(f'(postback){display_name}:{data}\n{now}')
     message = []
 
