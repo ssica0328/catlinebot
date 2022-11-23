@@ -13,5 +13,6 @@ class User_Info(models.Model):
     def __str__(self):
         return self.uid
 
-class random_exam(model.Model):
+class random_exam(models.Model):
     question=models.CharField(max_length=255,blank=True,null=False)
+
