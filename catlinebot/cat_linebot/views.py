@@ -33,11 +33,38 @@ def callback(request):
             return HttpResponseBadRequest()
 
         for event in events:
-            handle_message(event)
+            if event.type == 'message':
+                handle_message(event)
+            if event.type == 'postback':
+                handle_postback(event)
     
         return HttpResponse()
     else:
         return HttpResponseBadRequest()
+
+def handle_postback(event):
+    #得到user資訊
+    display_name = line_api.get_profile(event.source.user_id).display_name
+    user_id = line_api.get_profile(event.source.user_id).user_id
+    picture_url = line_api.get_profile(event.source.user_id).picture_url
+    now = time.ctime()
+    
+    data = event.postback.data
+    message = []
+
+    
+    if User_Info.objects.filter(uid=user_id).exists()==True:
+        user_info = User_Info.objects.filter(uid=user_id)
+        for user in user_info:
+            points = int(user.points)
+        if data == 0:
+            points += 10
+            User_Info.objects.filter(uid=user_id).update(points=points)
+            message.append(TextMessage(text=f'答對了!加10分，您的分數提升至：{points}分'))
+        else:
+            message.append(TextMessage(text=f'答錯了!您的分數維持在：{points}分'))
+    else:
+        message.append(TextMessage(text=f'您尚未建立會員，請輸入"開始"加入會員'))
 
 
 def handle_message(event):
