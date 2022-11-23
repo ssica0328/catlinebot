@@ -50,6 +50,7 @@ def handle_postback(event):
     now = time.ctime()
     
     data = event.postback.data
+    print(f'(postback){display_name}:{data}\n{now}')
     message = []
 
     
@@ -65,6 +66,7 @@ def handle_postback(event):
             message.append(TextMessage(text=f'答錯了!您的分數維持在：{points}分'))
     else:
         message.append(TextMessage(text=f'您尚未建立會員，請輸入"開始"加入會員'))
+    line_api.reply_message(event.reply_token, message)
 
 
 def handle_message(event):
