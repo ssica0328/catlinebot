@@ -107,7 +107,7 @@ def handle_message(event):
         template=ButtonsTemplate(
             title='其他文件',
             text='點選下方按鈕以建立會員資料',
-            thumbnail_image_url='https://i.imgur.com/YZFK2Od.jpg',
+            thumbnail_image_url='https://i.imgur.com/D4a3Ale.jpg',
             actions=[MessageTemplateAction(label='加入會員',text='新增會員資料')]))
         line_api.reply_message(event.reply_token, buttons_template)
 
