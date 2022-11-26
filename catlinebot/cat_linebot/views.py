@@ -12,6 +12,7 @@ from linebot.exceptions import InvalidSignatureError, LineBotApiError
 
 #其他
 import time
+import random
 
 from cat_linebot.models import *
 
@@ -105,7 +106,7 @@ def handle_message(event):
         buttons_template = TemplateSendMessage(
         alt_text='加入會員',
         template=ButtonsTemplate(
-            title='其他文件',
+            title='加入會員',
             text='點選下方按鈕以建立會員資料',
             thumbnail_image_url='https://i.imgur.com/D4a3Ale.jpg',
             actions=[MessageTemplateAction(label='加入會員',text='新增會員資料')]))
@@ -141,7 +142,8 @@ def handle_message(event):
             line_api.reply_message(event.reply_token, message)
 
     elif '每日一問' in text:
-        random_question = random_exam.objects.filter(num = 0)
+        i = random.randint(0, 5)
+        random_question = random_exam.objects.filter(num = i)
         for Q1 in random_question:
             num = Q1.num
             question = Q1.question
@@ -149,13 +151,16 @@ def handle_message(event):
             op2 = Q1.op2
             op3 = Q1.op3
             ans = int(Q1.ans)
-        message.append(TextMessage(text=f'每日一問：\n{question}\nA.{op1}\nB.{op2}\nC.{op3}\n'))
-        message.append(TextSendMessage(text="請選擇", quick_reply=QuickReply(
-                    items=[
-                        QuickReplyButton(action=PostbackAction(label="A", data=f"{1-ans}")),
-                        QuickReplyButton(action=PostbackAction(label="B", data=f"{2-ans}")),
-                        QuickReplyButton(action=PostbackAction(label="C", data=f"{3-ans}")),
-                        ])))
+        message.append(TemplateSendMessage(
+        alt_text='每日一問',
+        template=ButtonsTemplate(
+            title='每日一問',
+            text=f'回答以下問題並獲得積分:\n{question}',
+            thumbnail_image_url='https://i.imgur.com/D4a3Ale.jpg',
+            actions=[
+                    PostbackTemplateAction(label=f'A.{op1}',data=f"{1-ans}"),
+                    PostbackTemplateAction(label=f'B.{op2}',data=f"{2-ans}"),
+                    PostbackTemplateAction(label=f'C.{op3}',data=f"{3-ans}"),])))
         line_api.reply_message(event.reply_token, message)
     else:
         line_api.reply_message(event.reply_token,TextMessage(text=text))

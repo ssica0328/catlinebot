@@ -21,7 +21,7 @@ class random_exam(models.Model):
     op3 = models.CharField(max_length=255,blank=True,null=False,default='')
     ans = models.IntegerField(null=False,default=0)
 
-    def __str__(self):
+    def __int__(self):
         return self.num
 
 
