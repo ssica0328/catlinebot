@@ -104,7 +104,7 @@ def handle_message(event):
 
     elif '會員資料註冊' in text:
         if User_Info.objects.filter(uid=user_id).exists()==False:
-            message.append(buttons_template = TemplateSendMessage(
+            message.append(TemplateSendMessage(
             alt_text='加入會員',
             template=ButtonsTemplate(
                 title='加入會員',
