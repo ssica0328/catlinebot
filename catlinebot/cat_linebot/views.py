@@ -103,14 +103,20 @@ def handle_message(event):
         line_api.reply_message(event.reply_token, message)
 
     elif '會員資料註冊' in text:
-        buttons_template = TemplateSendMessage(
-        alt_text='加入會員',
-        template=ButtonsTemplate(
-            title='加入會員',
-            text='點選下方按鈕以建立會員資料',
-            thumbnail_image_url='https://i.imgur.com/D4a3Ale.jpg',
-            actions=[MessageTemplateAction(label='加入會員',text='新增會員資料')]))
-        line_api.reply_message(event.reply_token, buttons_template)
+        if User_Info.objects.filter(uid=user_id).exists()==False:
+            message.append(buttons_template = TemplateSendMessage(
+            alt_text='加入會員',
+            template=ButtonsTemplate(
+                title='加入會員',
+                text='點選下方按鈕以建立會員資料',
+                thumbnail_image_url='https://i.imgur.com/D4a3Ale.jpg',
+                actions=[MessageTemplateAction(label='加入會員',text='新增會員資料')])))
+        elif User_Info.objects.filter(uid=user_id).exists()==True:
+            user_info = User_Info.objects.filter(uid=user_id)
+            for user in user_info:
+                sign_time = user.mdt
+            message.append(TextMessage(text=f'已於{sign_time}註冊成功'))
+        line_api.reply_message(event.reply_token, message)
 
     elif '積分' in text:
         if '查詢' in text:
@@ -142,7 +148,7 @@ def handle_message(event):
             line_api.reply_message(event.reply_token, message)
 
     elif '每日問答' in text:
-        i = random.randint(0, 5)
+        i = random.randint(0, 4)
         random_question = random_exam.objects.filter(num = i)
         for Q1 in random_question:
             num = Q1.num
@@ -163,16 +169,7 @@ def handle_message(event):
                     PostbackTemplateAction(label=f'{op3}',data=f"{3-ans}"),])))
         line_api.reply_message(event.reply_token, message)
     elif '主食罐查詢' in text:
-        List_food = ['乖乖吃飯']
-        message.append(TemplateSendMessage(
-        alt_text='主食罐查詢',
-        template=ButtonsTemplate(
-            title='主食罐查詢',
-            text='主食罐查詢',
-            thumbnail_image_url='https://i.imgur.com/D4a3Ale.jpg',
-            actions=[
-                    MessageTemplateAction(label=f'{List_food[0]}',text=f"{List_food[0]}"),
-                    ])))
+        message.append(TextMessage(text=f'請輸入你要查詢的品牌'))
         line_api.reply_message(event.reply_token, message)
     elif '乖乖吃飯' in text:
         message.append(TemplateSendMessage(
@@ -202,7 +199,7 @@ def handle_message(event):
             kcal = items.kcal
             score = items.score
             message.append(TextSendMessage(text=f'{name}\n\n價格：{price}\n重量：{grans}\n蛋白質：{protein}\n\
-                            脂肪：{fat}\n碳水化合物：{carbo}\n磷含量：{phos}\n熱量：{kcal}\n推薦指數：{score}\n為這個罐罐評個分吧',
+            脂肪：{fat}\n碳水化合物：{carbo}\n磷含量：{phos}\n熱量：{kcal}\n推薦指數：{score}\n為這個罐罐評個分吧',
                         quick_reply=QuickReply(
                         items=[
                             QuickReplyButton(action=PostbackAction(label=f"{stars}", data="nothing")),
