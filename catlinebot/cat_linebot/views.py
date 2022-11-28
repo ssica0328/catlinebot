@@ -114,7 +114,8 @@ def handle_message(event):
         elif User_Info.objects.filter(uid=user_id).exists()==True:
             user_info = User_Info.objects.filter(uid=user_id)
             for user in user_info:
-                sign_time = user.mdt
+                sign_time = str(user.mdt)
+            sign_time = sign_time.split('.')[0]
             message.append(TextMessage(text=f'已於{sign_time}註冊成功'))
         line_api.reply_message(event.reply_token, message)
 
@@ -177,7 +178,7 @@ def handle_message(event):
         template=ButtonsTemplate(
             title='乖乖吃飯',
             text='乖乖吃飯',
-            thumbnail_image_url='https://i.imgur.com/D4a3Ale.jpg',
+            thumbnail_image_url='https://i.imgur.com/Z3QWYlE.jpg',
             actions=[
                     MessageTemplateAction(label='香煨嫩雞',text="香煨嫩雞"),
                     MessageTemplateAction(label='青魽凝鮨',text="青魽凝鮨"),
@@ -198,8 +199,7 @@ def handle_message(event):
             phos = items.phos
             kcal = items.kcal
             score = items.score
-            message.append(TextSendMessage(text=f'{name}\n\n價格：{price}\n重量：{grans}\n蛋白質：{protein}\n\
-            脂肪：{fat}\n碳水化合物：{carbo}\n磷含量：{phos}\n熱量：{kcal}\n推薦指數：{score}\n為這個罐罐評個分吧',
+            message.append(TextSendMessage(text=f'{name}\n\n價格：{price}\n重量：{grans}\n蛋白質：{protein}\n脂肪：{fat}\n碳水化合物：{carbo}\n磷含量：{phos}\n熱量：{kcal}\n推薦指數：{score}\n為這個罐罐評個分吧',
                         quick_reply=QuickReply(
                         items=[
                             QuickReplyButton(action=PostbackAction(label=f"{stars}", data="nothing")),
