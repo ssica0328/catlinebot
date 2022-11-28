@@ -186,8 +186,6 @@ def handle_message(event):
                     MessageTemplateAction(label='青魽凝鮨',text="青魽凝鮨"),
                     MessageTemplateAction(label='極品精鯛',text="極品精鯛"),
                     MessageTemplateAction(label='烈焰火雞',text="烈焰火雞"),
-                    MessageTemplateAction(label='鮮燉鴕鳥',text="鮮燉鴕鳥"),
-                    MessageTemplateAction(label='老甕珍牛',text="老甕珍牛"),
                     ])))
         line_api.reply_message(event.reply_token, message)
     elif '香煨嫩雞' in text:
