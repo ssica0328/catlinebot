@@ -93,16 +93,12 @@ def handle_message(event):
     if '新增會員資料' in text:
         if User_Info.objects.filter(uid=user_id).exists()==False:
             User_Info.objects.create(uid=user_id, name=display_name, pic_url=picture_url, mtext=text, mdt=now, points=0)
-            message.append(TextMessage(text='會員資料新增完畢'))
+            message.append(TextMessage(text='註冊成功'))
         elif User_Info.objects.filter(uid=user_id).exists()==True:
-            message.append(TextMessage(text='已建立過會員資料'))
-            user_info = User_Info.objects.filter(uid=user_id)
-            for user in user_info:
-                info = f'UID={user.uid}\nNAME={user.name}'
-            message.append(TextMessage(text=info))
+            message.append(TextMessage(text='已註冊成功'))
         line_api.reply_message(event.reply_token, message)
 
-    elif '開始' in text:
+    elif '會員資料註冊' in text:
         buttons_template = TemplateSendMessage(
         alt_text='加入會員',
         template=ButtonsTemplate(
@@ -112,8 +108,8 @@ def handle_message(event):
             actions=[MessageTemplateAction(label='加入會員',text='新增會員資料')]))
         line_api.reply_message(event.reply_token, buttons_template)
 
-    elif '分數' in text:
-        if '查看' in text:
+    elif '積分' in text:
+        if '查詢' in text:
             if User_Info.objects.filter(uid=user_id).exists()==True:
                 user_info = User_Info.objects.filter(uid=user_id)
                 for user in user_info:
@@ -162,5 +158,47 @@ def handle_message(event):
                     PostbackTemplateAction(label=f'{op2}',data=f"{2-ans}"),
                     PostbackTemplateAction(label=f'{op3}',data=f"{3-ans}"),])))
         line_api.reply_message(event.reply_token, message)
+    elif '主食罐查詢' in text:
+        List_food = ['乖乖吃飯']
+        message.append(TemplateSendMessage(
+        alt_text='主食罐查詢',
+        template=ButtonsTemplate(
+            title='主食罐查詢',
+            text='主食罐查詢',
+            thumbnail_image_url='https://i.imgur.com/D4a3Ale.jpg',
+            actions=[
+                    MessageTemplateAction(label=f'{List_food[0]}',text=f"{List_food[0]}"),
+                    ])))
+    elif '乖乖吃飯' in text:
+        message.append(TemplateSendMessage(
+        alt_text='乖乖吃飯',
+        template=ButtonsTemplate(
+            title='乖乖吃飯',
+            text='乖乖吃飯',
+            thumbnail_image_url='https://i.imgur.com/D4a3Ale.jpg',
+            actions=[
+                    MessageTemplateAction(label='香煨嫩雞',text="香煨嫩雞"),
+                    MessageTemplateAction(label='青魽凝鮨',text="青魽凝鮨"),
+                    MessageTemplateAction(label='極品精鯛',text="極品精鯛"),
+                    MessageTemplateAction(label='烈焰火雞',text="烈焰火雞"),
+                    MessageTemplateAction(label='鮮燉鴕鳥',text="鮮燉鴕鳥"),
+                    MessageTemplateAction(label='老甕珍牛',text="老甕珍牛"),
+                    ])))
+    elif '香煨嫩雞' in text:
+        food = 乖乖吃飯.objects.filter(num = 0)
+        
+        for items in food:
+            name = items.name
+            price = items.price
+            grans = items.grans
+            protein = items.protein
+            fat = items.fat
+            carbo = items.carbo
+            phos = items.phos
+            kcal = items.kcal
+            score = items.score
+            message.append(TextMessage(text=f'{name}\n\n價格：{price}\n重量：{grans}\n蛋白質：{protein}\n\
+                            脂肪：{fat}\n碳水化合物：{carbo}\n磷含量：{phos}\n熱量：{kcal}\n推薦指數：{score}'))
+
     else:
         line_api.reply_message(event.reply_token,TextMessage(text=text))
