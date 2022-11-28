@@ -13,6 +13,8 @@ from linebot.exceptions import InvalidSignatureError, LineBotApiError
 #其他
 import time
 import random
+import emoji as em
+stars = em.emojize(":glowing_star:")
 
 from cat_linebot.models import *
 
@@ -63,6 +65,8 @@ def handle_postback(event):
             points += 10
             User_Info.objects.filter(uid=user_id).update(points=points)
             message.append(TextMessage(text=f'答對了!加10分，您的分數提升至：{points}分'))
+        elif data == 'nothing':
+            message.append(TextMessage(text='測試成功'))
         else:
             message.append(TextMessage(text=f'答錯了!您的分數維持在：{points}分'))
     else:
@@ -169,6 +173,7 @@ def handle_message(event):
             actions=[
                     MessageTemplateAction(label=f'{List_food[0]}',text=f"{List_food[0]}"),
                     ])))
+        line_api.reply_message(event.reply_token, message)
     elif '乖乖吃飯' in text:
         message.append(TemplateSendMessage(
         alt_text='乖乖吃飯',
@@ -184,6 +189,7 @@ def handle_message(event):
                     MessageTemplateAction(label='鮮燉鴕鳥',text="鮮燉鴕鳥"),
                     MessageTemplateAction(label='老甕珍牛',text="老甕珍牛"),
                     ])))
+        line_api.reply_message(event.reply_token, message)
     elif '香煨嫩雞' in text:
         food = 乖乖吃飯.objects.filter(num = 0)
         
@@ -197,8 +203,17 @@ def handle_message(event):
             phos = items.phos
             kcal = items.kcal
             score = items.score
-            message.append(TextMessage(text=f'{name}\n\n價格：{price}\n重量：{grans}\n蛋白質：{protein}\n\
-                            脂肪：{fat}\n碳水化合物：{carbo}\n磷含量：{phos}\n熱量：{kcal}\n推薦指數：{score}'))
+            message.append(TextSendMessage(text=f'{name}\n\n價格：{price}\n重量：{grans}\n蛋白質：{protein}\n\
+                            脂肪：{fat}\n碳水化合物：{carbo}\n磷含量：{phos}\n熱量：{kcal}\n推薦指數：{score}\n為這個罐罐評個分吧',
+                        quick_reply=QuickReply(
+                        items=[
+                            QuickReplyButton(action=PostbackAction(label=f"{stars}", data="nothing")),
+                            QuickReplyButton(action=PostbackAction(label=f"{stars}{stars}", data="nothing")),
+                            QuickReplyButton(action=PostbackAction(label=f"{stars}{stars}{stars}", data="nothing")),
+                            QuickReplyButton(action=PostbackAction(label=f"{stars}{stars}{stars}{stars}", data="nothing")),
+                            QuickReplyButton(action=PostbackAction(label=f"{stars}{stars}{stars}{stars}{stars}", data="nothing")),
+                        ])))
+        line_api.reply_message(event.reply_token, message)
 
     else:
         line_api.reply_message(event.reply_token,TextMessage(text=text))
