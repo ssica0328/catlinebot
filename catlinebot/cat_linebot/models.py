@@ -24,4 +24,20 @@ class random_exam(models.Model):
     def __int__(self):
         return self.num
 
+class 乖乖吃飯(models.Model):
+    num = models.IntegerField(null=False,default=0)
+    price = models.CharField(max_length=255,blank=True,null=False,default='')
+    grans = models.CharField(max_length=255,blank=True,null=False,default='')
+    protein = models.CharField(max_length=255,blank=True,null=False,default='')
+    fat = models.CharField(max_length=255,blank=True,null=False,default='')
+    carbo = models.CharField(max_length=255,blank=True,null=False,default='')
+    phos = models.CharField(max_length=255,blank=True,null=False,default='')
+    kcal = models.CharField(max_length=255,blank=True,null=False,default='')
+    score = models.IntegerField(null=False,default=0)
+
+    def __int__(self):
+        return self.num
+
+
+
 

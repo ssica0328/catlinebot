@@ -141,7 +141,7 @@ def handle_message(event):
                 message.append(TextMessage(text=f'您尚未建立會員，請輸入"開始"加入會員'))
             line_api.reply_message(event.reply_token, message)
 
-    elif '每日一問' in text:
+    elif '每日問答' in text:
         i = random.randint(0, 5)
         random_question = random_exam.objects.filter(num = i)
         for Q1 in random_question:
@@ -152,15 +152,15 @@ def handle_message(event):
             op3 = Q1.op3
             ans = int(Q1.ans)
         message.append(TemplateSendMessage(
-        alt_text='每日一問',
+        alt_text='每日問答',
         template=ButtonsTemplate(
-            title='每日一問',
+            title='每日問答',
             text=f'回答以下問題並獲得積分:\n{question}',
             thumbnail_image_url='https://i.imgur.com/D4a3Ale.jpg',
             actions=[
-                    PostbackTemplateAction(label=f'A.{op1}',data=f"{1-ans}"),
-                    PostbackTemplateAction(label=f'B.{op2}',data=f"{2-ans}"),
-                    PostbackTemplateAction(label=f'C.{op3}',data=f"{3-ans}"),])))
+                    PostbackTemplateAction(label=f'{op1}',data=f"{1-ans}"),
+                    PostbackTemplateAction(label=f'{op2}',data=f"{2-ans}"),
+                    PostbackTemplateAction(label=f'{op3}',data=f"{3-ans}"),])))
         line_api.reply_message(event.reply_token, message)
     else:
         line_api.reply_message(event.reply_token,TextMessage(text=text))
