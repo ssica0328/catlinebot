@@ -26,6 +26,7 @@ class random_exam(models.Model):
 
 class 乖乖吃飯(models.Model):
     num = models.IntegerField(null=False,default=0)
+    name = models.CharField(max_length=255,blank=True,null=False,default='')
     price = models.CharField(max_length=255,blank=True,null=False,default='')
     grans = models.CharField(max_length=255,blank=True,null=False,default='')
     protein = models.CharField(max_length=255,blank=True,null=False,default='')
