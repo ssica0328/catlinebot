@@ -200,7 +200,7 @@ def handle_message(event):
                 phos = items.phos
                 kcal = items.kcal
                 score = items.score
-            message.append(TextSendMessage(text=f'{name}\n\n價格：{price}\n重量：{grams}\n蛋白質：{protein}\n脂肪：{fat}\n碳水化合物：{carbo}\n磷含量：{phos}\n熱量：{kcal}\n推薦指數：{score}\n為這個罐罐評個分吧',
+            message.append(TextSendMessage(text=f'{name}\n\n價格：{price}\n重量：{grams}\n蛋白質：{protein}\n脂肪：{fat}\n碳水化合物：{carbo}\n磷含量：{phos}\n熱量：{kcal}\n推薦指數：{score}\n為這個商品評分吧',
                         quick_reply=QuickReply(
                         items=[
                             QuickReplyButton(action=PostbackAction(label=f"{stars}", data="nothing")),
@@ -236,7 +236,7 @@ def handle_message(event):
                 material = items.material
                 ratio = items.ratio
                 score = items.score
-            message.append(TextSendMessage(text=f'{name}\n\n價格：{price}\n重量：{grams}成分：{material}\n產品配比：{ratio}\n推薦指數：{score}\n為這個罐罐評個分吧',
+            message.append(TextSendMessage(text=f'{name}\n\n價格：{price}\n重量：{grams}\n成分：{material}\n產品配比：{ratio}\n推薦指數：{score}\n為這個商品評分吧',
                         quick_reply=QuickReply(
                         items=[
                             QuickReplyButton(action=PostbackAction(label=f"{stars}", data="nothing")),
@@ -273,7 +273,7 @@ def handle_message(event):
                 carbo = items.carbo
                 phos = items.phos
                 score = items.score
-            message.append(TextSendMessage(text=f'{name}\n\n價格：{price}\n重量：{grams}\n蛋白質：{protein}\n脂肪：{fat}\n碳水化合物：{carbo}\n磷含量：{phos}\n推薦指數：{score}\n為這個罐罐評個分吧',
+            message.append(TextSendMessage(text=f'{name}\n\n價格：{price}\n重量：{grams}\n蛋白質：{protein}\n脂肪：{fat}\n碳水化合物：{carbo}\n磷含量：{phos}\n推薦指數：{score}\n為這個商品評分吧',
                         quick_reply=QuickReply(
                         items=[
                             QuickReplyButton(action=PostbackAction(label=f"{stars}", data="nothing")),
