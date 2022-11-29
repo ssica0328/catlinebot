@@ -39,6 +39,22 @@ class 乖乖吃飯(models.Model):
     def __int__(self):
         return self.num
 
+class 心靈雞湯(models.Model):
+    num = models.IntegerField(null=False,default=0)
+    name = models.CharField(max_length=255,blank=True,null=False,default='')
+    price = models.CharField(max_length=255,blank=True,null=False,default='')
+    grams = models.CharField(max_length=255,blank=True,null=False,default='')
+    protein = models.CharField(max_length=255,blank=True,null=False,default='')
+    fat = models.CharField(max_length=255,blank=True,null=False,default='')
+    carbo = models.CharField(max_length=255,blank=True,null=False,default='')
+    phos = models.CharField(max_length=255,blank=True,null=False,default='')
+    kcal = models.CharField(max_length=255,blank=True,null=False,default='')
+    score = models.IntegerField(null=False,default=0)
+
+    def __int__(self):
+        return self.num
+
+
 class pidan(models.Model):
     num = models.IntegerField(null=False,default=0)
     name = models.CharField(max_length=255,blank=True,null=False,default='')
@@ -50,6 +66,7 @@ class pidan(models.Model):
 
     def __int__(self):
         return self.num
+
 
 
 
