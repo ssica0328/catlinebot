@@ -94,60 +94,41 @@ def handle_message(event):
     #訊息
     message = []
 
-    if '新增會員資料' in text:
+    if '會員資料' in text:
+        if User_Info.objects.filter(uid=user_id).exists()==False:
+            message.append(TemplateSendMessage(
+            alt_text='會員資料',
+            template=ButtonsTemplate(
+                title='會員資料',
+                text='請點選下方按鈕',
+                thumbnail_image_url='https://i.imgur.com/D4a3Ale.jpg',
+                actions=[
+                        MessageTemplateAction(label='加入會員',text='加入會員'),
+                        MessageTemplateAction(label='積分查詢',text='積分查詢'),])))
+        elif User_Info.objects.filter(uid=user_id).exists()==True:
+            user_info = User_Info.objects.filter(uid=user_id)
+            for user in user_info:
+                sign_time = str(user.mdt)
+            sign_time = sign_time.split('.')[0]
+            message.append(TextMessage(text=f'已於{sign_time}\n註冊成功'))
+        line_api.reply_message(event.reply_token, message)
+    elif '加入會員' in text:
         if User_Info.objects.filter(uid=user_id).exists()==False:
             User_Info.objects.create(uid=user_id, name=display_name, pic_url=picture_url, mtext=text, mdt=now, points=0)
             message.append(TextMessage(text='註冊成功'))
         elif User_Info.objects.filter(uid=user_id).exists()==True:
             message.append(TextMessage(text='已註冊成功'))
         line_api.reply_message(event.reply_token, message)
-
-    elif '會員資料註冊' in text:
-        if User_Info.objects.filter(uid=user_id).exists()==False:
-            message.append(TemplateSendMessage(
-            alt_text='加入會員',
-            template=ButtonsTemplate(
-                title='加入會員',
-                text='點選下方按鈕以建立會員資料',
-                thumbnail_image_url='https://i.imgur.com/D4a3Ale.jpg',
-                actions=[MessageTemplateAction(label='加入會員',text='新增會員資料')])))
-        elif User_Info.objects.filter(uid=user_id).exists()==True:
+    elif '積分查詢' in text:
+        if User_Info.objects.filter(uid=user_id).exists()==True:
             user_info = User_Info.objects.filter(uid=user_id)
             for user in user_info:
-                sign_time = str(user.mdt)
-            sign_time = sign_time.split('.')[0]
-            message.append(TextMessage(text=f'已於{sign_time}註冊成功'))
+                points = int(user.points)
+            message.append(TextMessage(text=f'您的分數是：{points}分'))
+        else:
+            message.append(TextMessage(text=f'您尚未建立會員，請點選下方選單並加入會員'))
         line_api.reply_message(event.reply_token, message)
-
-    elif '積分' in text:
-        if '查詢' in text:
-            if User_Info.objects.filter(uid=user_id).exists()==True:
-                user_info = User_Info.objects.filter(uid=user_id)
-                for user in user_info:
-                    points = int(user.points)
-                message.append(TextMessage(text=f'您的分數是：{points}分'))
-            else:
-                message.append(TextMessage(text=f'您尚未建立會員，請輸入"開始"加入會員'))
-            line_api.reply_message(event.reply_token, message)
-        elif '歸零' in text:
-            if User_Info.objects.filter(uid=user_id).exists()==True:
-                User_Info.objects.filter(uid=user_id).update(points=int(0))
-                message.append(TextMessage(text=f'您已成功將分數歸零'))
-            else:
-                message.append(TextMessage(text=f'您尚未建立會員，請輸入"開始"加入會員'))
-            line_api.reply_message(event.reply_token, message)
-        elif '+1' in text:
-            if User_Info.objects.filter(uid=user_id).exists()==True:
-                user_info = User_Info.objects.filter(uid=user_id)
-                for user in user_info:
-                    points = int(user.points)
-                points += 1
-                User_Info.objects.filter(uid=user_id).update(points=points)
-                message.append(TextMessage(text=f'分數成功+1'))
-            else:
-                message.append(TextMessage(text=f'您尚未建立會員，請輸入"開始"加入會員'))
-            line_api.reply_message(event.reply_token, message)
-
+        
     elif '每日問答' in text:
         i = random.randint(0, 4)
         random_question = random_exam.objects.filter(num = i)
@@ -170,7 +151,7 @@ def handle_message(event):
                     PostbackTemplateAction(label=f'{op3}',data=f"{3-ans}"),])))
         line_api.reply_message(event.reply_token, message)
     elif '主食罐查詢' in text:
-        message.append(TextMessage(text=f'請輸入你要查詢的品牌'))
+        message.append(TextMessage(text=f'請輸入您要查詢的品牌\n(ex.乖乖吃飯)'))
         line_api.reply_message(event.reply_token, message)
     elif '乖乖吃飯' in text:
         message.append(TemplateSendMessage(
@@ -192,14 +173,14 @@ def handle_message(event):
         for items in food:
             name = items.name
             price = items.price
-            grans = items.grans
+            grams = items.grams
             protein = items.protein
             fat = items.fat
             carbo = items.carbo
             phos = items.phos
             kcal = items.kcal
             score = items.score
-            message.append(TextSendMessage(text=f'{name}\n\n價格：{price}\n重量：{grans}\n蛋白質：{protein}\n脂肪：{fat}\n碳水化合物：{carbo}\n磷含量：{phos}\n熱量：{kcal}\n推薦指數：{score}\n為這個罐罐評個分吧',
+            message.append(TextSendMessage(text=f'{name}\n\n價格：{price}\n重量：{grams}\n蛋白質：{protein}\n脂肪：{fat}\n碳水化合物：{carbo}\n磷含量：{phos}\n熱量：{kcal}\n推薦指數：{score}\n為這個罐罐評個分吧',
                         quick_reply=QuickReply(
                         items=[
                             QuickReplyButton(action=PostbackAction(label=f"{stars}", data="nothing")),
