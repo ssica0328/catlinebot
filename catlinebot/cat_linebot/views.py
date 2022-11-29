@@ -171,14 +171,6 @@ def handle_message(event):
                         MessageTemplateAction(label='玩具',text="玩具"),
                         ])))
         line_api.reply_message(event.reply_token, message)
-    elif '主食罐' in text:
-        message.append(TextMessage(text='請輸入你要查詢的品牌(ex.乖乖吃飯)'))
-    elif '飼料' in text:
-        message.append(TextMessage(text='請輸入你要查詢的品牌(ex.心靈雞湯)'))
-    elif '貓砂' in text:
-        message.append(TextMessage(text='請輸入你要查詢的品牌(ex.pidan)'))
-    elif '玩具' in text:
-        message.append(TextMessage(text='請輸入你要查詢的品牌'))
     elif '乖乖吃飯' in text:
         if text == '乖乖吃飯':
             message.append(TemplateSendMessage(
@@ -290,6 +282,18 @@ def handle_message(event):
                             QuickReplyButton(action=PostbackAction(label=f"{stars}{stars}{stars}{stars}", data="nothing")),
                             QuickReplyButton(action=PostbackAction(label=f"{stars}{stars}{stars}{stars}{stars}", data="nothing")),
                         ])))
+        line_api.reply_message(event.reply_token, message)
+    elif '主食罐' in text:
+        message.append(TextMessage(text='請輸入你要查詢的品牌(ex.乖乖吃飯)'))
+        line_api.reply_message(event.reply_token, message)
+    elif '飼料' in text:
+        message.append(TextMessage(text='請輸入你要查詢的品牌(ex.心靈雞湯)'))
+        line_api.reply_message(event.reply_token, message)
+    elif '貓砂' in text:
+        message.append(TextMessage(text='請輸入你要查詢的品牌(ex.pidan)'))
+        line_api.reply_message(event.reply_token, message)
+    elif '玩具' in text:
+        message.append(TextMessage(text='請輸入你要查詢的品牌'))
         line_api.reply_message(event.reply_token, message)
     else:
         line_api.reply_message(event.reply_token,TextMessage(text=text))
