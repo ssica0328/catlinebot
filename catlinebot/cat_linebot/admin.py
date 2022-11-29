@@ -14,3 +14,7 @@ admin.site.register(random_exam,random_exam_Admin)
 class 乖乖吃飯_Admin(admin.ModelAdmin):
     list_display = ['num', 'name','price', 'grans', 'protein', 'fat', 'carbo', 'phos', 'kcal', 'score']
 admin.site.register(乖乖吃飯,乖乖吃飯_Admin)
+
+class pidan_Admin(admin.ModelAdmin):
+    list_display = ['num', 'name','price', 'grams', 'material','ratio', 'score']
+admin.site.register(pidan,pidan_Admin)
