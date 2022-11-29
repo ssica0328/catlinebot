@@ -12,6 +12,7 @@ from linebot.exceptions import InvalidSignatureError, LineBotApiError
 
 #其他
 import time
+import datetime as dt
 import random
 import emoji as em
 stars = em.emojize(":glowing_star:")
@@ -108,8 +109,9 @@ def handle_message(event):
         elif User_Info.objects.filter(uid=user_id).exists()==True:
             user_info = User_Info.objects.filter(uid=user_id)
             for user in user_info:
-                sign_time = str(user.mdt)
-            sign_time = sign_time.split('.')[0]
+                sign_time = user.mdt
+            sign_time += dt.timedelta(hour = 8)
+            sign_time = str(sign_time).split('.')[0]
             message.append(TextMessage(text=f'已於{sign_time}\n註冊成功'))
         line_api.reply_message(event.reply_token, message)
     elif '加入會員' in text:
@@ -117,7 +119,12 @@ def handle_message(event):
             User_Info.objects.create(uid=user_id, name=display_name, pic_url=picture_url, mtext=text, mdt=now, points=0)
             message.append(TextMessage(text='註冊成功'))
         elif User_Info.objects.filter(uid=user_id).exists()==True:
-            message.append(TextMessage(text='已註冊成功'))
+            user_info = User_Info.objects.filter(uid=user_id)
+            for user in user_info:
+                sign_time = user.mdt
+            sign_time += dt.timedelta(hour = 8)
+            sign_time = str(sign_time).split('.')[0]
+            message.append(TextMessage(text=f'已於{sign_time}\n註冊成功'))
         line_api.reply_message(event.reply_token, message)
     elif '積分查詢' in text:
         if User_Info.objects.filter(uid=user_id).exists()==True:
@@ -150,36 +157,39 @@ def handle_message(event):
                     PostbackTemplateAction(label=f'{op2}',data=f"{2-ans}"),
                     PostbackTemplateAction(label=f'{op3}',data=f"{3-ans}"),])))
         line_api.reply_message(event.reply_token, message)
-    elif '主食罐查詢' in text:
+    elif '商品查詢' in text:
         message.append(TextMessage(text=f'請輸入您要查詢的品牌\n(ex.乖乖吃飯)'))
         line_api.reply_message(event.reply_token, message)
     elif '乖乖吃飯' in text:
-        message.append(TemplateSendMessage(
-        alt_text='乖乖吃飯',
-        template=ButtonsTemplate(
-            title='乖乖吃飯',
-            text='乖乖吃飯',
-            thumbnail_image_url='https://i.imgur.com/Z3QWYlE.jpg',
-            actions=[
-                    MessageTemplateAction(label='香煨嫩雞',text="香煨嫩雞"),
-                    MessageTemplateAction(label='青魽凝鮨',text="青魽凝鮨"),
-                    MessageTemplateAction(label='極品精鯛',text="極品精鯛"),
-                    MessageTemplateAction(label='烈焰火雞',text="烈焰火雞"),
-                    ])))
-        line_api.reply_message(event.reply_token, message)
-    elif '香煨嫩雞' in text:
-        food = 乖乖吃飯.objects.filter(num = 0)
-        
-        for items in food:
-            name = items.name
-            price = items.price
-            grams = items.grams
-            protein = items.protein
-            fat = items.fat
-            carbo = items.carbo
-            phos = items.phos
-            kcal = items.kcal
-            score = items.score
+        if text == '乖乖吃飯':
+            message.append(TemplateSendMessage(
+            alt_text='乖乖吃飯',
+            template=ButtonsTemplate(
+                title='乖乖吃飯',
+                text='乖乖吃飯',
+                thumbnail_image_url='https://i.imgur.com/Z3QWYlE.jpg',
+                actions=[
+                        MessageTemplateAction(label='香煨嫩雞',text="乖乖吃飯_香煨嫩雞"),
+                        MessageTemplateAction(label='青魽凝鮨',text="乖乖吃飯_青魽凝鮨"),
+                        MessageTemplateAction(label='極品精鯛',text="乖乖吃飯_極品精鯛"),
+                        MessageTemplateAction(label='烈焰火雞',text="乖乖吃飯_烈焰火雞"),
+                        ])))
+            line_api.reply_message(event.reply_token, message)
+        else:
+            dict1 = {'香煨嫩雞':0, '青魽凝鮨':1, '極品精鯛':2, '烈焰火雞':3, '鮮燉鴕鳥':4, '老甕珍牛':5}
+            text1 = text.split('_')[1]
+            i = dict1[text1]
+            food = 乖乖吃飯.objects.filter(num = i)
+            for items in food:
+                name = items.name
+                price = items.price
+                grams = items.grams
+                protein = items.protein
+                fat = items.fat
+                carbo = items.carbo
+                phos = items.phos
+                kcal = items.kcal
+                score = items.score
             message.append(TextSendMessage(text=f'{name}\n\n價格：{price}\n重量：{grams}\n蛋白質：{protein}\n脂肪：{fat}\n碳水化合物：{carbo}\n磷含量：{phos}\n熱量：{kcal}\n推薦指數：{score}\n為這個罐罐評個分吧',
                         quick_reply=QuickReply(
                         items=[
