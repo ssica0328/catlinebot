@@ -110,7 +110,7 @@ def handle_message(event):
             user_info = User_Info.objects.filter(uid=user_id)
             for user in user_info:
                 sign_time = user.mdt
-            sign_time += dt.timedelta(hour = 8)
+            sign_time += dt.timedelta(hours = 8)
             sign_time = str(sign_time).split('.')[0]
             message.append(TextMessage(text=f'已於{sign_time}\n註冊成功'))
         line_api.reply_message(event.reply_token, message)
@@ -122,7 +122,7 @@ def handle_message(event):
             user_info = User_Info.objects.filter(uid=user_id)
             for user in user_info:
                 sign_time = user.mdt
-            sign_time += dt.timedelta(hour = 8)
+            sign_time += dt.timedelta(hours = 8)
             sign_time = str(sign_time).split('.')[0]
             message.append(TextMessage(text=f'已於{sign_time}\n註冊成功'))
         line_api.reply_message(event.reply_token, message)
