@@ -53,7 +53,7 @@ def handle_postback(event):
     picture_url = line_api.get_profile(event.source.user_id).picture_url
     now = time.ctime()
     
-    data = int(event.postback.data)
+    data = event.postback.data
     print(f'(postback){display_name}:{data}\n{now}')
     message = []
 
@@ -62,7 +62,7 @@ def handle_postback(event):
         user_info = User_Info.objects.filter(uid=user_id)
         for user in user_info:
             points = int(user.points)
-        if data == 0:
+        if data == '0':
             points += 10
             User_Info.objects.filter(uid=user_id).update(points=points)
             message.append(TextMessage(text=f'答對了!加10分，您的分數提升至：{points}分'))
@@ -209,10 +209,10 @@ def handle_message(event):
                 text='點選下方按鈕查看商品資訊',
                 thumbnail_image_url='https://i.imgur.com/Z3QWYlE.jpg',
                 actions=[
-                        MessageTemplateAction(label='混合貓砂 經典版 (豆腐砂+礦砂)',text="pidan_混合貓砂 經典版"),
-                        MessageTemplateAction(label='混合貓砂 活性碳低塵版 (豆腐砂+破碎型礦砂)',text="pidan_混合貓砂 活性碳低塵版"),
-                        MessageTemplateAction(label='豆腐貓砂 原味款 (豆腐砂)',text="pidan_豆腐貓砂 原味款"),
-                        MessageTemplateAction(label='豆腐貓砂 隱血測試款 (豆腐砂)',text="pidan_豆腐貓砂 隱血測試款"),
+                        MessageTemplateAction(label='混合貓砂經典版(豆腐砂+礦砂)',text="pidan_混合貓砂 經典版"),
+                        MessageTemplateAction(label='混合貓砂活性碳低塵版(豆腐砂+破碎礦砂)',text="pidan_混合貓砂 活性碳低塵版"),
+                        MessageTemplateAction(label='豆腐貓砂原味款(豆腐砂)',text="pidan_豆腐貓砂 原味款"),
+                        MessageTemplateAction(label='豆腐貓砂隱血測試款(豆腐砂)',text="pidan_豆腐貓砂 隱血測試款"),
                         ])))
             line_api.reply_message(event.reply_token, message)
         else:
@@ -264,9 +264,8 @@ def handle_message(event):
                 fat = items.fat
                 carbo = items.carbo
                 phos = items.phos
-                kcal = items.kcal
                 score = items.score
-            message.append(TextSendMessage(text=f'{name}\n\n價格：{price}\n重量：{grams}\n蛋白質：{protein}\n脂肪：{fat}\n碳水化合物：{carbo}\n磷含量：{phos}\n熱量：{kcal}\n推薦指數：{score}\n為這個罐罐評個分吧',
+            message.append(TextSendMessage(text=f'{name}\n\n價格：{price}\n重量：{grams}\n蛋白質：{protein}\n脂肪：{fat}\n碳水化合物：{carbo}\n磷含量：{phos}\n推薦指數：{score}\n為這個罐罐評個分吧',
                         quick_reply=QuickReply(
                         items=[
                             QuickReplyButton(action=PostbackAction(label=f"{stars}", data="nothing")),
