@@ -16,7 +16,7 @@ class 乖乖吃飯_Admin(admin.ModelAdmin):
 admin.site.register(乖乖吃飯,乖乖吃飯_Admin)
 
 class 心靈雞湯_Admin(admin.ModelAdmin):
-    list_display = ['num', 'name','price', 'grams', 'protein', 'fat', 'carbo', 'phos', 'kcal', 'score']
+    list_display = ['num', 'name','price', 'grams', 'protein', 'fat', 'carbo', 'phos', 'score']
 admin.site.register(心靈雞湯,心靈雞湯_Admin)
 
 class pidan_Admin(admin.ModelAdmin):

@@ -48,7 +48,6 @@ class 心靈雞湯(models.Model):
     fat = models.CharField(max_length=255,blank=True,null=False,default='')
     carbo = models.CharField(max_length=255,blank=True,null=False,default='')
     phos = models.CharField(max_length=255,blank=True,null=False,default='')
-    kcal = models.CharField(max_length=255,blank=True,null=False,default='')
     score = models.IntegerField(null=False,default=0)
 
     def __int__(self):
