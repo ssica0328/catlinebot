@@ -158,8 +158,27 @@ def handle_message(event):
                     PostbackTemplateAction(label=f'{op3}',data=f"{3-ans}"),])))
         line_api.reply_message(event.reply_token, message)
     elif '商品查詢' in text:
-        message.append(TextMessage(text=f'請輸入您要查詢的品牌\n(ex.乖乖吃飯)'))
+        message.append(TemplateSendMessage(
+            alt_text='商品查詢',
+            template=ButtonsTemplate(
+                title='商品查詢',
+                text='點選下方按鈕查看商品資訊',
+                thumbnail_image_url='https://i.imgur.com/Z3QWYlE.jpg',
+                actions=[
+                        MessageTemplateAction(label='主食罐',text="主食罐"),
+                        MessageTemplateAction(label='飼料',text="飼料"),
+                        MessageTemplateAction(label='貓砂',text="貓砂"),
+                        MessageTemplateAction(label='玩具',text="玩具"),
+                        ])))
         line_api.reply_message(event.reply_token, message)
+    elif '主食罐' in text:
+        message.append(TextMessage(text='請輸入你要查詢的品牌(ex.乖乖吃飯)'))
+    elif '飼料' in text:
+        message.append(TextMessage(text='請輸入你要查詢的品牌(ex.心靈雞湯)'))
+    elif '貓砂' in text:
+        message.append(TextMessage(text='請輸入你要查詢的品牌(ex.pidan)'))
+    elif '玩具' in text:
+        message.append(TextMessage(text='請輸入你要查詢的品牌'))
     elif '乖乖吃飯' in text:
         if text == '乖乖吃飯':
             message.append(TemplateSendMessage(
@@ -174,7 +193,6 @@ def handle_message(event):
                         MessageTemplateAction(label='極品精鯛',text="乖乖吃飯_極品精鯛"),
                         MessageTemplateAction(label='烈焰火雞',text="乖乖吃飯_烈焰火雞"),
                         ])))
-            line_api.reply_message(event.reply_token, message)
         else:
             dict1 = {'香煨嫩雞':0, '青魽凝鮨':1, '極品精鯛':2, '烈焰火雞':3, '鮮燉鴕鳥':4, '老甕珍牛':5}
             text1 = text.split('_')[1]
@@ -200,8 +218,8 @@ def handle_message(event):
                             QuickReplyButton(action=PostbackAction(label=f"{stars}{stars}{stars}{stars}{stars}", data="nothing")),
                         ])))
         line_api.reply_message(event.reply_token, message)
-    elif 'pidan' in text:
-        if text == 'pidan':
+    elif 'pidan' in text or 'Pidan' in text:
+        if text == 'pidan' or text == 'Pidan':
             message.append(TemplateSendMessage(
             alt_text='pidan',
             template=ButtonsTemplate(
@@ -209,12 +227,11 @@ def handle_message(event):
                 text='點選下方按鈕查看商品資訊',
                 thumbnail_image_url='https://i.imgur.com/Z3QWYlE.jpg',
                 actions=[
-                        MessageTemplateAction(label='混合貓砂經典版(豆腐砂+礦砂)',text="pidan_混合貓砂 經典版"),
-                        MessageTemplateAction(label='混合貓砂活性碳低塵版(豆腐砂+破碎礦砂)',text="pidan_混合貓砂 活性碳低塵版"),
-                        MessageTemplateAction(label='豆腐貓砂原味款(豆腐砂)',text="pidan_豆腐貓砂 原味款"),
-                        MessageTemplateAction(label='豆腐貓砂隱血測試款(豆腐砂)',text="pidan_豆腐貓砂 隱血測試款"),
+                        MessageTemplateAction(label='混合貓砂經典版',text="pidan_混合貓砂 經典版"),
+                        MessageTemplateAction(label='混合貓砂活性碳低塵版',text="pidan_混合貓砂 活性碳低塵版"),
+                        MessageTemplateAction(label='豆腐貓砂原味款',text="pidan_豆腐貓砂 原味款"),
+                        MessageTemplateAction(label='豆腐貓砂隱血測試款',text="pidan_豆腐貓砂 隱血測試款"),
                         ])))
-            line_api.reply_message(event.reply_token, message)
         else:
             dict1 = {'混合貓砂 經典版':0, '混合貓砂 活性碳低塵版':1, '豆腐貓砂 原味款':2, '豆腐貓砂 隱血測試款':3}
             text1 = text.split('_')[1]
@@ -250,7 +267,6 @@ def handle_message(event):
                         MessageTemplateAction(label='經典系列-雞肉佐火雞肉幼母貓',text="心靈雞湯_經典雞肉幼貓"),
                         MessageTemplateAction(label='經典系列-鮭魚佐雞肉成貓',text="心靈雞湯_經典鮭魚"),
                         ])))
-            line_api.reply_message(event.reply_token, message)
         else:
             dict1 = {'經典雞肉成貓':0, '經典雞肉幼貓':1, '經典鮭魚':2}
             text1 = text.split('_')[1]
