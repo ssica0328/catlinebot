@@ -13,6 +13,8 @@ from linebot.exceptions import InvalidSignatureError, LineBotApiError
 #其他
 import time
 import datetime as dt
+pretime = dt.datetime(2018, 6, 14, 21, 17, 8, 132263).isoformat(' ')
+
 import random
 import emoji as em
 stars = em.emojize(":glowing_star:")
@@ -51,27 +53,29 @@ def handle_postback(event):
     display_name = line_api.get_profile(event.source.user_id).display_name
     user_id = line_api.get_profile(event.source.user_id).user_id
     picture_url = line_api.get_profile(event.source.user_id).picture_url
-    now = time.ctime()
+    now = dt.datetime.now()
     
     data = event.postback.data
     print(f'(postback){display_name}:{data}\n{now}')
     message = []
 
-    
-    if User_Info.objects.filter(uid=user_id).exists()==True:
-        user_info = User_Info.objects.filter(uid=user_id)
-        for user in user_info:
-            points = int(user.points)
-        if data == '0':
-            points += 10
-            User_Info.objects.filter(uid=user_id).update(points=points)
-            message.append(TextMessage(text=f'答對了!加10分，您的分數提升至：{points}分'))
-        elif data == 'nothing':
-            message.append(TextMessage(text='測試成功'))
+    if 'game' in data:
+        data = str(data).split('+')[1]
+        if User_Info.objects.filter(uid=user_id).exists()==True:
+            user_info = User_Info.objects.filter(uid=user_id)
+            for user in user_info:
+                points = int(user.points)
+            if data == '0':
+                points += 10
+                User_Info.objects.filter(uid=user_id).update(points=points)
+                message.append(TextMessage(text=f'答對了！獲得積分10分\n您的分數提升至：{points}分\n請明日再來'))
+            else:
+                message.append(TextMessage(text=f'答錯了！您的分數將維持在：{points}分'))
         else:
-            message.append(TextMessage(text=f'答錯了!您的分數維持在：{points}分'))
+            message.append(TextMessage(text=f'您尚未建立會員，請點選下方選單並加入會員'))
     else:
-        message.append(TextMessage(text=f'您尚未建立會員，請輸入"開始"加入會員'))
+        message.append(TextMessage(text='測試中'))
+            
     line_api.reply_message(event.reply_token, message)
 
 
@@ -80,7 +84,7 @@ def handle_message(event):
     display_name = line_api.get_profile(event.source.user_id).display_name
     user_id = line_api.get_profile(event.source.user_id).user_id
     picture_url = line_api.get_profile(event.source.user_id).picture_url
-    now = time.ctime()
+    now = dt.datetime.now()
 
     #分辨型別為text
     if event.message.type == "text":
@@ -116,7 +120,7 @@ def handle_message(event):
         line_api.reply_message(event.reply_token, message)
     elif '加入會員' in text:
         if User_Info.objects.filter(uid=user_id).exists()==False:
-            User_Info.objects.create(uid=user_id, name=display_name, pic_url=picture_url, mtext=text, mdt=now, points=0)
+            User_Info.objects.create(uid=user_id, name=display_name, pic_url=picture_url, mtext=text, mdt=now, ansdt=pretime, points=0)
             message.append(TextMessage(text='註冊成功'))
         elif User_Info.objects.filter(uid=user_id).exists()==True:
             user_info = User_Info.objects.filter(uid=user_id)
@@ -137,25 +141,39 @@ def handle_message(event):
         line_api.reply_message(event.reply_token, message)
         
     elif '每日問答' in text:
-        i = random.randint(0, 4)
-        random_question = random_exam.objects.filter(num = i)
-        for Q1 in random_question:
-            num = Q1.num
-            question = Q1.question
-            op1 = Q1.op1
-            op2 = Q1.op2
-            op3 = Q1.op3
-            ans = int(Q1.ans)
-        message.append(TemplateSendMessage(
-        alt_text='每日問答',
-        template=ButtonsTemplate(
-            title='每日問答',
-            text=f'回答以下問題並獲得積分:\n{question}',
-            thumbnail_image_url='https://i.imgur.com/D4a3Ale.jpg',
-            actions=[
-                    PostbackTemplateAction(label=f'{op1}',data=f"{1-ans}"),
-                    PostbackTemplateAction(label=f'{op2}',data=f"{2-ans}"),
-                    PostbackTemplateAction(label=f'{op3}',data=f"{3-ans}"),])))
+        if User_Info.objects.filter(uid=user_id).exists()==True:
+            user_info = User_Info.objects.filter(uid=user_id)
+            for user in user_info:
+                ans_time = user.ansdt
+            ans_time += dt.timedelta(hours = 8)
+            ans_time = str(ans_time).split(' ')[0]
+            today_time = str(now).split(' ')[0]
+            if ans_time == today_time:
+                message.append(TextMessage(text=f'您今日已做過每日問答，請明日再來'))
+            else:
+                i = random.randint(0, 4)
+                random_question = random_exam.objects.filter(num = i)
+                for Q1 in random_question:
+                    num = Q1.num
+                    question = Q1.question
+                    op1 = Q1.op1
+                    op2 = Q1.op2
+                    op3 = Q1.op3
+                    ans = int(Q1.ans)
+                message.append(TemplateSendMessage(
+                    alt_text='每日問答',
+                    template=ButtonsTemplate(
+                    title='每日問答',
+                    text=f'回答以下問題並獲得積分:\n{question}',
+                    thumbnail_image_url='https://i.imgur.com/D4a3Ale.jpg',
+                    actions=[
+                            PostbackTemplateAction(label=f'{op1}',data=f"game+{1-ans}"),
+                            PostbackTemplateAction(label=f'{op2}',data=f"game+{2-ans}"),
+                            PostbackTemplateAction(label=f'{op3}',data=f"game+{3-ans}"),])))
+                User_Info.objects.filter(uid=user_id).update(ansdt=now)
+        else:
+            message.append(TextMessage(text=f'您尚未建立會員，請點選下方選單並加入會員'))
+        
         line_api.reply_message(event.reply_token, message)
     elif '商品查詢' in text:
         message.append(TemplateSendMessage(

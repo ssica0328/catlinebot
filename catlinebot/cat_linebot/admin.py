@@ -4,7 +4,7 @@ from django.contrib import admin
 from cat_linebot.models import *
 
 class User_Info_Admin(admin.ModelAdmin):
-    list_display = ('uid', 'name', 'pic_url', 'mtext', 'mdt', 'points')
+    list_display = ('uid', 'name', 'pic_url', 'mtext', 'mdt', 'ansdt', 'points')
 admin.site.register(User_Info,User_Info_Admin)
 
 class random_exam_Admin(admin.ModelAdmin):
