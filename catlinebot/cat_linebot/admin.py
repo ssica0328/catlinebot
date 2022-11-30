@@ -22,3 +22,7 @@ admin.site.register(心靈雞湯,心靈雞湯_Admin)
 class pidan_Admin(admin.ModelAdmin):
     list_display = ['num', 'name','price', 'grams', 'material','ratio', 'score']
 admin.site.register(pidan,pidan_Admin)
+
+class toy_Admin(admin.ModelAdmin):
+    list_display = ['num', 'name','price', 'score']
+admin.site.register(toy,toy_Admin)

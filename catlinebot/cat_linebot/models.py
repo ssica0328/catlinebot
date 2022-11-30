@@ -66,7 +66,14 @@ class pidan(models.Model):
     def __int__(self):
         return self.num
 
+class toy(models.Model):
+    num = models.IntegerField(null=False,default=0)
+    name = models.CharField(max_length=255,blank=True,null=False,default='')
+    price = models.CharField(max_length=255,blank=True,null=False,default='')
+    score = models.IntegerField(null=False,default=0)
 
+    def __int__(self):
+        return self.num
 
 
 
