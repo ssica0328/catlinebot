@@ -54,6 +54,7 @@ def handle_postback(event):
     user_id = line_api.get_profile(event.source.user_id).user_id
     picture_url = line_api.get_profile(event.source.user_id).picture_url
     now = dt.datetime.now()
+    #now += dt.timedelta(hours = 8)
     
     data = event.postback.data
     print(f'(postback){display_name}:{data}\n{now}')
@@ -145,9 +146,9 @@ def handle_message(event):
             user_info = User_Info.objects.filter(uid=user_id)
             for user in user_info:
                 ans_time = user.ansdt
-            ans_time += dt.timedelta(hours = 8)
             ans_time = str(ans_time).split(' ')[0]
             today_time = str(now).split(' ')[0]
+            print(f'anstime:{ans_time}, todaytime:{today_time}')
             if ans_time == today_time:
                 message.append(TextMessage(text=f'您今日已做過每日問答，請明日再來'))
             else:
