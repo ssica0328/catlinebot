@@ -1,6 +1,8 @@
 from django.db import models
+from django.utils import timezone
 import datetime as dt
-pretime = dt.datetime(2018, 6, 14, 21, 17, 8, 132263).isoformat(' ')
+import pytz
+pretime = dt.datetime(2018, 6, 14, 21, 17, 8, 132263, tzinfo=pytz.UTC).isoformat(' ')
 # Create your models here.
 
 class User_Info(models.Model):

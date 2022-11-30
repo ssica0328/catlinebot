@@ -13,6 +13,8 @@ from linebot.exceptions import InvalidSignatureError, LineBotApiError
 #其他
 import time
 import datetime as dt
+from django.utils import timezone
+import pytz
 pretime = dt.datetime(2018, 6, 14, 21, 17, 8, 132263).isoformat(' ')
 
 import random
@@ -53,7 +55,7 @@ def handle_postback(event):
     display_name = line_api.get_profile(event.source.user_id).display_name
     user_id = line_api.get_profile(event.source.user_id).user_id
     picture_url = line_api.get_profile(event.source.user_id).picture_url
-    now = dt.datetime.now()
+    now = timezone.now()
     #now += dt.timedelta(hours = 8)
     
     data = event.postback.data
@@ -85,7 +87,7 @@ def handle_message(event):
     display_name = line_api.get_profile(event.source.user_id).display_name
     user_id = line_api.get_profile(event.source.user_id).user_id
     picture_url = line_api.get_profile(event.source.user_id).picture_url
-    now = dt.datetime.now()
+    now = timezone.now()
 
     #分辨型別為text
     if event.message.type == "text":
