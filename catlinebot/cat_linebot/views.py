@@ -148,6 +148,7 @@ def handle_message(event):
                 ans_time = user.ansdt
             ans_time = str(ans_time).split(' ')[0]
             today_time = str(now).split(' ')[0]
+            print(f'ans_time:{ans_time}, today_time:{today_time}')
             if ans_time == today_time:
                 message.append(TextMessage(text=f'您今日已做過每日問答，請明日再來'))
             else:
