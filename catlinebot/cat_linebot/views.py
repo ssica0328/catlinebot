@@ -121,7 +121,7 @@ def handle_message(event):
         line_api.reply_message(event.reply_token, message)
     elif '加入會員' in text:
         if User_Info.objects.filter(uid=user_id).exists()==False:
-            User_Info.objects.create(uid=user_id, name=display_name, pic_url=picture_url, mtext=text, mdt=now, ansdt=pretime, points=0)
+            User_Info.objects.create(uid=user_id, name=display_name, pic_url=picture_url, mtext=text, mdt=now, points=0)
             message.append(TextMessage(text='註冊成功'))
         elif User_Info.objects.filter(uid=user_id).exists()==True:
             user_info = User_Info.objects.filter(uid=user_id)
@@ -148,7 +148,6 @@ def handle_message(event):
                 ans_time = user.ansdt
             ans_time = str(ans_time).split(' ')[0]
             today_time = str(now).split(' ')[0]
-            print(f'anstime:{ans_time}, todaytime:{today_time}')
             if ans_time == today_time:
                 message.append(TextMessage(text=f'您今日已做過每日問答，請明日再來'))
             else:

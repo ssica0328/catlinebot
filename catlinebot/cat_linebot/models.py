@@ -8,7 +8,7 @@ class User_Info(models.Model):
     name = models.CharField(max_length=255,blank=True,null=False)       #LINE名字
     pic_url = models.CharField(max_length=255,null=False)               #大頭貼網址
     mtext = models.CharField(max_length=255,blank=True,null=False)      #文字訊息紀錄
-    mdt = models.DateTimeField(auto_now=True)                           #物件儲存的日期時間
+    mdt = models.DateTimeField(auto_now=False)                          #物件儲存的日期時間
     ansdt = models.DateTimeField(auto_now=False,default=f'{pretime}')   #User回答每日一問的時間
     points = models.IntegerField(null=False,default=0)                  #分數
 
