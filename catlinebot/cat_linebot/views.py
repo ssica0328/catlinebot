@@ -78,6 +78,7 @@ def handle_postback(event):
                     points += 10
                     User_Info.objects.filter(uid=user_id).update(points=points)
                     message.append(TextMessage(text=f'答對了！獲得積分10分\n您的分數提升至：{points}分\n請明日再來'))
+                    User_Info.objects.filter(uid=user_id).update(ansdt=now)
                 else:
                     message.append(TextMessage(text=f'答錯了！您的分數將維持在：{points}分'))
         else:
@@ -184,7 +185,6 @@ def handle_message(event):
                             PostbackTemplateAction(label=f'{op1}',data=f"game+{1-ans}"),
                             PostbackTemplateAction(label=f'{op2}',data=f"game+{2-ans}"),
                             PostbackTemplateAction(label=f'{op3}',data=f"game+{3-ans}"),])))
-                User_Info.objects.filter(uid=user_id).update(ansdt=now)
         else:
             message.append(TextMessage(text=f'您尚未建立會員，請點選下方選單並加入會員'))
         
@@ -306,7 +306,9 @@ def handle_message(event):
                 carbo = items.carbo
                 phos = items.phos
                 score = items.score
-            message.append(TextSendMessage(text=f'{name}\n\n價格：{price}\n重量：{grams}\n蛋白質：{protein}\n脂肪：{fat}\n碳水化合物：{carbo}\n磷含量：{phos}\n推薦指數：{score}\n為這個商品評分吧',
+                times = items.times
+            avg_score = round(score/times, 1)
+            message.append(TextSendMessage(text=f'{name}\n\n價格：{price}\n重量：{grams}\n蛋白質：{protein}\n脂肪：{fat}\n碳水化合物：{carbo}\n磷含量：{phos}\n推薦指數：{avg_score}\n為這個商品評分吧',
                         quick_reply=QuickReply(
                         items=[
                             QuickReplyButton(action=PostbackAction(label=f"{stars}", data=f"心+{num}+1")),
