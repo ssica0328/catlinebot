@@ -68,14 +68,33 @@ def handle_postback(event):
             user_info = User_Info.objects.filter(uid=user_id)
             for user in user_info:
                 points = int(user.points)
-            if data == '0':
-                points += 10
-                User_Info.objects.filter(uid=user_id).update(points=points)
-                message.append(TextMessage(text=f'答對了！獲得積分10分\n您的分數提升至：{points}分\n請明日再來'))
+                ans_time = user.ansdt
+            ans_time = str(ans_time).split(' ')[0]
+            today_time = str(now).split(' ')[0]
+            if ans_time == today_time:
+                message.append(TextMessage(text=f'您今日已做過每日問答，請明日再來'))
             else:
-                message.append(TextMessage(text=f'答錯了！您的分數將維持在：{points}分'))
+                if data == '0':
+                    points += 10
+                    User_Info.objects.filter(uid=user_id).update(points=points)
+                    message.append(TextMessage(text=f'答對了！獲得積分10分\n您的分數提升至：{points}分\n請明日再來'))
+                else:
+                    message.append(TextMessage(text=f'答錯了！您的分數將維持在：{points}分'))
         else:
             message.append(TextMessage(text=f'您尚未建立會員，請點選下方選單並加入會員'))
+    elif '心' in data:
+        num = int(str(data).split('+')[1])
+        food = 心靈雞湯.objects.filter(num = num)
+        for items in food:
+            scores = items.score
+            times = items.times
+        
+        new_score = int(str(data).split('+')[2])
+        scores += new_score
+        times += 1
+        心靈雞湯.objects.filter(num = num).update(score = scores)
+        心靈雞湯.objects.filter(num = num).update(times = times)
+        message.append(TextMessage(text='感謝您為此商品完成評分！'))
     else:
         message.append(TextMessage(text='測試中'))
             
@@ -103,23 +122,15 @@ def handle_message(event):
     message = []
 
     if '會員資料' in text:
-        if User_Info.objects.filter(uid=user_id).exists()==False:
-            message.append(TemplateSendMessage(
-            alt_text='會員資料',
-            template=ButtonsTemplate(
-                title='會員資料',
-                text='請點選下方按鈕',
-                thumbnail_image_url='https://i.imgur.com/D4a3Ale.jpg',
-                actions=[
-                        MessageTemplateAction(label='加入會員',text='加入會員'),
-                        MessageTemplateAction(label='積分查詢',text='積分查詢'),])))
-        elif User_Info.objects.filter(uid=user_id).exists()==True:
-            user_info = User_Info.objects.filter(uid=user_id)
-            for user in user_info:
-                sign_time = user.mdt
-            sign_time += dt.timedelta(hours = 8)
-            sign_time = str(sign_time).split('.')[0]
-            message.append(TextMessage(text=f'已於{sign_time}\n註冊成功'))
+        message.append(TemplateSendMessage(
+        alt_text='會員資料',
+        template=ButtonsTemplate(
+            title='會員資料',
+            text='請點選下方按鈕',
+            thumbnail_image_url='https://i.imgur.com/D4a3Ale.jpg',
+            actions=[
+                    MessageTemplateAction(label='加入會員',text='加入會員'),
+                    MessageTemplateAction(label='積分查詢',text='積分查詢'),])))
         line_api.reply_message(event.reply_token, message)
     elif '加入會員' in text:
         if User_Info.objects.filter(uid=user_id).exists()==False:
@@ -286,6 +297,7 @@ def handle_message(event):
             i = dict1[text1]
             food = 心靈雞湯.objects.filter(num = i)
             for items in food:
+                num = items.num
                 name = items.name
                 price = items.price
                 grams = items.grams
@@ -297,11 +309,11 @@ def handle_message(event):
             message.append(TextSendMessage(text=f'{name}\n\n價格：{price}\n重量：{grams}\n蛋白質：{protein}\n脂肪：{fat}\n碳水化合物：{carbo}\n磷含量：{phos}\n推薦指數：{score}\n為這個商品評分吧',
                         quick_reply=QuickReply(
                         items=[
-                            QuickReplyButton(action=PostbackAction(label=f"{stars}", data="nothing")),
-                            QuickReplyButton(action=PostbackAction(label=f"{stars}{stars}", data="nothing")),
-                            QuickReplyButton(action=PostbackAction(label=f"{stars}{stars}{stars}", data="nothing")),
-                            QuickReplyButton(action=PostbackAction(label=f"{stars}{stars}{stars}{stars}", data="nothing")),
-                            QuickReplyButton(action=PostbackAction(label=f"{stars}{stars}{stars}{stars}{stars}", data="nothing")),
+                            QuickReplyButton(action=PostbackAction(label=f"{stars}", data=f"心+{num}+1")),
+                            QuickReplyButton(action=PostbackAction(label=f"{stars}{stars}", data=f"心+{num}+2")),
+                            QuickReplyButton(action=PostbackAction(label=f"{stars}{stars}{stars}", data=f"心+{num}+3")),
+                            QuickReplyButton(action=PostbackAction(label=f"{stars}{stars}{stars}{stars}", data=f"心+{num}+4")),
+                            QuickReplyButton(action=PostbackAction(label=f"{stars}{stars}{stars}{stars}{stars}", data=f"心+{num}+5")),
                         ])))
         line_api.reply_message(event.reply_token, message)
     elif '主食罐' in text:

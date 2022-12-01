@@ -39,6 +39,7 @@ class 乖乖吃飯(models.Model):
     phos = models.CharField(max_length=255,blank=True,null=False,default='')
     kcal = models.CharField(max_length=255,blank=True,null=False,default='')
     score = models.IntegerField(null=False,default=0)
+    times = models.IntegerField(null=False,default=1)
 
     def __int__(self):
         return self.num
@@ -53,6 +54,7 @@ class 心靈雞湯(models.Model):
     carbo = models.CharField(max_length=255,blank=True,null=False,default='')
     phos = models.CharField(max_length=255,blank=True,null=False,default='')
     score = models.IntegerField(null=False,default=0)
+    times = models.IntegerField(null=False,default=1)
 
     def __int__(self):
         return self.num
@@ -66,6 +68,7 @@ class pidan(models.Model):
     material = models.CharField(max_length=255,blank=True,null=False,default='')
     ratio = models.CharField(max_length=255,blank=True,null=False,default='')
     score = models.IntegerField(null=False,default=0)
+    times = models.IntegerField(null=False,default=1)
 
     def __int__(self):
         return self.num
@@ -75,6 +78,7 @@ class toy(models.Model):
     name = models.CharField(max_length=255,blank=True,null=False,default='')
     price = models.CharField(max_length=255,blank=True,null=False,default='')
     score = models.IntegerField(null=False,default=0)
+    times = models.IntegerField(null=False,default=1)
 
     def __int__(self):
         return self.num
