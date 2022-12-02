@@ -249,7 +249,7 @@ def handle_message(event):
             template=ButtonsTemplate(
                 title='pidan',
                 text='點選下方按鈕查看商品資訊',
-                thumbnail_image_url='https://i.imgur.com/Z3QWYlE.jpg',
+                thumbnail_image_url='https://i.imgur.com/1OLysXx.jpg',
                 actions=[
                         MessageTemplateAction(label='混合貓砂經典版',text="pidan_混合貓砂 經典版"),
                         MessageTemplateAction(label='混合貓砂活性碳低塵版',text="pidan_混合貓砂 活性碳低塵版"),
@@ -285,7 +285,7 @@ def handle_message(event):
             template=ButtonsTemplate(
                 title='心靈雞湯',
                 text='點選下方按鈕查看商品資訊',
-                thumbnail_image_url='https://i.imgur.com/Z3QWYlE.jpg',
+                thumbnail_image_url='https://i.imgur.com/BrxDhHR.jpg',
                 actions=[
                         MessageTemplateAction(label='經典系列-雞肉佐火雞肉成貓',text="心靈雞湯_經典雞肉成貓"),
                         MessageTemplateAction(label='經典系列-雞肉佐火雞肉幼母貓',text="心靈雞湯_經典雞肉幼貓"),
