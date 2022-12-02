@@ -83,6 +83,32 @@ def handle_postback(event):
                     message.append(TextMessage(text=f'答錯了！您的分數將維持在：{points}分'))
         else:
             message.append(TextMessage(text=f'您尚未建立會員，請點選下方選單並加入會員'))
+    elif '乖' in data:
+        num = int(str(data).split('+')[1])
+        food = 乖乖吃飯.objects.filter(num = num)
+        for items in food:
+            scores = items.score
+            times = items.times
+        
+        new_score = int(str(data).split('+')[2])
+        scores += new_score
+        times += 1
+        乖乖吃飯.objects.filter(num = num).update(score = scores)
+        乖乖吃飯.objects.filter(num = num).update(times = times)
+        message.append(TextMessage(text='感謝您為此商品完成評分！'))
+    elif 'pi' in data:
+        num = int(str(data).split('+')[1])
+        food = pidan.objects.filter(num = num)
+        for items in food:
+            scores = items.score
+            times = items.times
+        
+        new_score = int(str(data).split('+')[2])
+        scores += new_score
+        times += 1
+        pidan.objects.filter(num = num).update(score = scores)
+        pidan.objects.filter(num = num).update(times = times)
+        message.append(TextMessage(text='感謝您為此商品完成評分！'))
     elif '心' in data:
         num = int(str(data).split('+')[1])
         food = 心靈雞湯.objects.filter(num = num)
@@ -223,6 +249,7 @@ def handle_message(event):
             i = dict1[text1]
             food = 乖乖吃飯.objects.filter(num = i)
             for items in food:
+                num = items.num
                 name = items.name
                 price = items.price
                 grams = items.grams
@@ -237,11 +264,11 @@ def handle_message(event):
             message.append(TextSendMessage(text=f'{name}\n\n價格：{price}\n重量：{grams}\n蛋白質：{protein}\n脂肪：{fat}\n碳水化合物：{carbo}\n磷含量：{phos}\n熱量：{kcal}\n推薦指數：{avg_score}\n為這個商品評分吧',
                         quick_reply=QuickReply(
                         items=[
-                            QuickReplyButton(action=PostbackAction(label=f"{stars}", data="nothing")),
-                            QuickReplyButton(action=PostbackAction(label=f"{stars}{stars}", data="nothing")),
-                            QuickReplyButton(action=PostbackAction(label=f"{stars}{stars}{stars}", data="nothing")),
-                            QuickReplyButton(action=PostbackAction(label=f"{stars}{stars}{stars}{stars}", data="nothing")),
-                            QuickReplyButton(action=PostbackAction(label=f"{stars}{stars}{stars}{stars}{stars}", data="nothing")),
+                            QuickReplyButton(action=PostbackAction(label=f"1{stars}", data=f"乖+{num}+1")),
+                            QuickReplyButton(action=PostbackAction(label=f"2{stars}", data=f"乖+{num}+2")),
+                            QuickReplyButton(action=PostbackAction(label=f"3{stars}", data=f"乖+{num}+3")),
+                            QuickReplyButton(action=PostbackAction(label=f"4{stars}", data=f"乖+{num}+4")),
+                            QuickReplyButton(action=PostbackAction(label=f"5{stars}", data=f"乖+{num}+5")),
                         ])))
         line_api.reply_message(event.reply_token, message)
     elif 'pidan' in text or 'Pidan' in text:
@@ -264,6 +291,7 @@ def handle_message(event):
             i = dict1[text1]
             food = pidan.objects.filter(num = i)
             for items in food:
+                num = items.num
                 name = items.name
                 price = items.price
                 grams = items.grams
@@ -275,11 +303,11 @@ def handle_message(event):
             message.append(TextSendMessage(text=f'{name}\n\n價格：{price}\n重量：{grams}\n成分：{material}\n產品配比：{ratio}\n推薦指數：{avg_score}\n為這個商品評分吧',
                         quick_reply=QuickReply(
                         items=[
-                            QuickReplyButton(action=PostbackAction(label=f"{stars}", data="nothing")),
-                            QuickReplyButton(action=PostbackAction(label=f"{stars}{stars}", data="nothing")),
-                            QuickReplyButton(action=PostbackAction(label=f"{stars}{stars}{stars}", data="nothing")),
-                            QuickReplyButton(action=PostbackAction(label=f"{stars}{stars}{stars}{stars}", data="nothing")),
-                            QuickReplyButton(action=PostbackAction(label=f"{stars}{stars}{stars}{stars}{stars}", data="nothing")),
+                            QuickReplyButton(action=PostbackAction(label=f"1{stars}", data=f"pi+{num}+1")),
+                            QuickReplyButton(action=PostbackAction(label=f"2{stars}", data=f"pi+{num}+2")),
+                            QuickReplyButton(action=PostbackAction(label=f"3{stars}", data=f"pi+{num}+3")),
+                            QuickReplyButton(action=PostbackAction(label=f"4{stars}", data=f"pi+{num}+4")),
+                            QuickReplyButton(action=PostbackAction(label=f"5{stars}", data=f"pi+{num}+5")),
                         ])))
         line_api.reply_message(event.reply_token, message)
     elif '心靈雞湯' in text:
@@ -315,11 +343,11 @@ def handle_message(event):
             message.append(TextSendMessage(text=f'{name}\n\n價格：{price}\n重量：{grams}\n蛋白質：{protein}\n脂肪：{fat}\n碳水化合物：{carbo}\n磷含量：{phos}\n推薦指數：{avg_score}\n為這個商品評分吧',
                         quick_reply=QuickReply(
                         items=[
-                            QuickReplyButton(action=PostbackAction(label=f"{stars}", data=f"心+{num}+1")),
-                            QuickReplyButton(action=PostbackAction(label=f"{stars}{stars}", data=f"心+{num}+2")),
-                            QuickReplyButton(action=PostbackAction(label=f"{stars}{stars}{stars}", data=f"心+{num}+3")),
-                            QuickReplyButton(action=PostbackAction(label=f"{stars}{stars}{stars}{stars}", data=f"心+{num}+4")),
-                            QuickReplyButton(action=PostbackAction(label=f"{stars}{stars}{stars}{stars}{stars}", data=f"心+{num}+5")),
+                            QuickReplyButton(action=PostbackAction(label=f"1{stars}", data=f"心+{num}+1")),
+                            QuickReplyButton(action=PostbackAction(label=f"2{stars}", data=f"心+{num}+2")),
+                            QuickReplyButton(action=PostbackAction(label=f"3{stars}", data=f"心+{num}+3")),
+                            QuickReplyButton(action=PostbackAction(label=f"4{stars}", data=f"心+{num}+4")),
+                            QuickReplyButton(action=PostbackAction(label=f"5{stars}", data=f"心+{num}+5")),
                         ])))
         line_api.reply_message(event.reply_token, message)
     elif 'afu' in text or 'Afu' in text:
@@ -384,25 +412,25 @@ def handle_message(event):
         message.append(TextSendMessage(text='請輸入你要查詢的品牌(ex.乖乖吃飯)',
                         quick_reply=QuickReply(
                         items=[
-                            QuickReplyButton(action=PostbackAction(label="乖乖吃飯", text="乖乖吃飯"))])))
+                            QuickReplyButton(action=MessageAction(label="乖乖吃飯", text="乖乖吃飯"))])))
         line_api.reply_message(event.reply_token, message)
     elif '飼料' in text:
         message.append(TextSendMessage(text='請輸入你要查詢的品牌(ex.心靈雞湯)',
                         quick_reply=QuickReply(
                         items=[
-                            QuickReplyButton(action=PostbackAction(label="心靈雞湯", text="心靈雞湯"))])))
+                            QuickReplyButton(action=MessageAction(label="心靈雞湯", text="心靈雞湯"))])))
         line_api.reply_message(event.reply_token, message)
     elif '貓砂' in text:
         message.append(TextSendMessage(text='請輸入你要查詢的品牌(ex.pidan)',
                         quick_reply=QuickReply(
                         items=[
-                            QuickReplyButton(action=PostbackAction(label="pidan", text="pidan"))])))
+                            QuickReplyButton(action=MessageAction(label="pidan", text="pidan"))])))
         line_api.reply_message(event.reply_token, message)
     elif '玩具' in text:
-        message.append(TextMessage(text='請輸入你要查詢的品牌(ex.afu)',
+        message.append(TextSendMessage(text='請輸入你要查詢的品牌(ex.afu)',
                         quick_reply=QuickReply(
                         items=[
-                            QuickReplyButton(action=PostbackAction(label="afu", text="afu"))])))
+                            QuickReplyButton(action=MessageAction(label="afu", text="afu"))])))
         line_api.reply_message(event.reply_token, message)
     else:
         line_api.reply_message(event.reply_token,TextMessage(text=text))
