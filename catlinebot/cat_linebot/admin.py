@@ -24,5 +24,5 @@ class pidan_Admin(admin.ModelAdmin):
 admin.site.register(pidan,pidan_Admin)
 
 class toy_Admin(admin.ModelAdmin):
-    list_display = ['num', 'name','price', 'score', 'times']
+    list_display = ['num', 'name', 'price', 'pic_url', 'score', 'times']
 admin.site.register(toy,toy_Admin)

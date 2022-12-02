@@ -232,7 +232,9 @@ def handle_message(event):
                 phos = items.phos
                 kcal = items.kcal
                 score = items.score
-            message.append(TextSendMessage(text=f'{name}\n\n價格：{price}\n重量：{grams}\n蛋白質：{protein}\n脂肪：{fat}\n碳水化合物：{carbo}\n磷含量：{phos}\n熱量：{kcal}\n推薦指數：{score}\n為這個商品評分吧',
+                times = items.times
+            avg_score = round(score/times, 1)
+            message.append(TextSendMessage(text=f'{name}\n\n價格：{price}\n重量：{grams}\n蛋白質：{protein}\n脂肪：{fat}\n碳水化合物：{carbo}\n磷含量：{phos}\n熱量：{kcal}\n推薦指數：{avg_score}\n為這個商品評分吧',
                         quick_reply=QuickReply(
                         items=[
                             QuickReplyButton(action=PostbackAction(label=f"{stars}", data="nothing")),
@@ -268,7 +270,9 @@ def handle_message(event):
                 material = items.material
                 ratio = items.ratio
                 score = items.score
-            message.append(TextSendMessage(text=f'{name}\n\n價格：{price}\n重量：{grams}\n成分：{material}\n產品配比：{ratio}\n推薦指數：{score}\n為這個商品評分吧',
+                times = items.times
+            avg_score = round(score/times, 1)
+            message.append(TextSendMessage(text=f'{name}\n\n價格：{price}\n重量：{grams}\n成分：{material}\n產品配比：{ratio}\n推薦指數：{avg_score}\n為這個商品評分吧',
                         quick_reply=QuickReply(
                         items=[
                             QuickReplyButton(action=PostbackAction(label=f"{stars}", data="nothing")),
@@ -318,17 +322,87 @@ def handle_message(event):
                             QuickReplyButton(action=PostbackAction(label=f"{stars}{stars}{stars}{stars}{stars}", data=f"心+{num}+5")),
                         ])))
         line_api.reply_message(event.reply_token, message)
+    elif 'afu' in text or 'Afu' in text:
+        if text == 'afu' or text == 'Afu':
+            message.append(TemplateSendMessage(
+            alt_text='afu',
+            template=ButtonsTemplate(
+                title='afu',
+                text='點選下方按鈕查看商品資訊',
+                thumbnail_image_url='https://i.imgur.com/ZeFRf5Q.jpg',
+                actions=[
+                        MessageTemplateAction(label='貓抓板',text="afu_貓抓板"),
+                        MessageTemplateAction(label='貓屋',text="afu_貓屋")
+                        ])))
+        else:
+            columns = []
+            text1 = text.split('_')[1]
+            if text1 == '貓抓板':
+                for i in range(0,3):
+                    merch = toy.objects.filter(num = i)
+                    for items in merch:
+                        num = items.num
+                        name = items.name
+                        price = items.price
+                        merch_url = items.pic_url
+                        score = items.score
+                        times = items.times
+                    avg_score = round(score/times, 1)
+                    columns.append(CarouselColumn(
+                                        thumbnail_image_url=f'{merch_url}',
+                                        title=f'{name}',
+                                        text=f'價格：{price}\n推薦指數：{avg_score}',
+                                        actions=[
+                                            PostbackTemplateAction(label='為此商品評分' ,data='其他'),
+                                                ]))
+                message.append(TemplateSendMessage(
+                    alt_text='貓抓板',
+                    template=CarouselTemplate(columns=columns)))
+            elif text1 == '貓屋':        
+                for i in range(4,7):
+                    merch = toy.objects.filter(num = i)
+                    for items in merch:
+                        num = items.num
+                        name = items.name
+                        price = items.price
+                        merch_url = items.pic_url
+                        score = items.score
+                        times = items.times
+                    avg_score = round(score/times, 1)
+                    columns.append(CarouselColumn(
+                                        thumbnail_image_url=f'{merch_url}',
+                                        title=f'{name}',
+                                        text=f'價格：{price}\n推薦指數：{avg_score}',
+                                        actions=[
+                                            PostbackTemplateAction(label='為此商品評分' ,data='其他'),
+                                                ]))
+                message.append(TemplateSendMessage(
+                    alt_text='貓抓板',
+                    template=CarouselTemplate(columns=columns)))
+        line_api.reply_message(event.reply_token, message)
     elif '主食罐' in text:
-        message.append(TextMessage(text='請輸入你要查詢的品牌(ex.乖乖吃飯)'))
+        message.append(TextSendMessage(text='請輸入你要查詢的品牌(ex.乖乖吃飯)',
+                        quick_reply=QuickReply(
+                        items=[
+                            QuickReplyButton(action=PostbackAction(label="乖乖吃飯", text="乖乖吃飯"))])))
         line_api.reply_message(event.reply_token, message)
     elif '飼料' in text:
-        message.append(TextMessage(text='請輸入你要查詢的品牌(ex.心靈雞湯)'))
+        message.append(TextSendMessage(text='請輸入你要查詢的品牌(ex.心靈雞湯)',
+                        quick_reply=QuickReply(
+                        items=[
+                            QuickReplyButton(action=PostbackAction(label="心靈雞湯", text="心靈雞湯"))])))
         line_api.reply_message(event.reply_token, message)
     elif '貓砂' in text:
-        message.append(TextMessage(text='請輸入你要查詢的品牌(ex.pidan)'))
+        message.append(TextSendMessage(text='請輸入你要查詢的品牌(ex.pidan)',
+                        quick_reply=QuickReply(
+                        items=[
+                            QuickReplyButton(action=PostbackAction(label="pidan", text="pidan"))])))
         line_api.reply_message(event.reply_token, message)
     elif '玩具' in text:
-        message.append(TextMessage(text='請輸入你要查詢的品牌'))
+        message.append(TextMessage(text='請輸入你要查詢的品牌(ex.afu)',
+                        quick_reply=QuickReply(
+                        items=[
+                            QuickReplyButton(action=PostbackAction(label="afu", text="afu"))])))
         line_api.reply_message(event.reply_token, message)
     else:
         line_api.reply_message(event.reply_token,TextMessage(text=text))
