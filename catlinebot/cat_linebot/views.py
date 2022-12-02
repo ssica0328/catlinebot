@@ -122,6 +122,52 @@ def handle_postback(event):
         心靈雞湯.objects.filter(num = num).update(score = scores)
         心靈雞湯.objects.filter(num = num).update(times = times)
         message.append(TextMessage(text='感謝您為此商品完成評分！'))
+    elif '貓抓' in data:
+        num = int(str(data).split('+')[1])
+        new_score = int(str(data).split('+')[2])
+        if new_score == 0:
+            message.append(TextSendMessage(text='為這個商品評分吧',
+                        quick_reply=QuickReply(
+                        items=[
+                            QuickReplyButton(action=PostbackAction(label=f"1{stars}", data=f"貓抓+{num}+1")),
+                            QuickReplyButton(action=PostbackAction(label=f"2{stars}", data=f"貓抓+{num}+2")),
+                            QuickReplyButton(action=PostbackAction(label=f"3{stars}", data=f"貓抓+{num}+3")),
+                            QuickReplyButton(action=PostbackAction(label=f"4{stars}", data=f"貓抓+{num}+4")),
+                            QuickReplyButton(action=PostbackAction(label=f"5{stars}", data=f"貓抓+{num}+5")),
+                        ])))
+        else:
+            toys = toy.objects.filter(num = num)
+            for items in toys:
+                scores = items.score
+                times = items.times
+            scores += new_score
+            times += 1
+            toy.objects.filter(num = num).update(score = scores)
+            toy.objects.filter(num = num).update(times = times)
+            message.append(TextMessage(text='感謝您為此商品完成評分！'))
+    elif '貓屋' in data:
+        num = int(str(data).split('+')[1])
+        new_score = int(str(data).split('+')[2])
+        if new_score == 0:
+            message.append(TextSendMessage(text='為這個商品評分吧',
+                        quick_reply=QuickReply(
+                        items=[
+                            QuickReplyButton(action=PostbackAction(label=f"1{stars}", data=f"貓屋+{num}+1")),
+                            QuickReplyButton(action=PostbackAction(label=f"2{stars}", data=f"貓屋+{num}+2")),
+                            QuickReplyButton(action=PostbackAction(label=f"3{stars}", data=f"貓屋+{num}+3")),
+                            QuickReplyButton(action=PostbackAction(label=f"4{stars}", data=f"貓屋+{num}+4")),
+                            QuickReplyButton(action=PostbackAction(label=f"5{stars}", data=f"貓屋+{num}+5")),
+                        ])))
+        else:
+            toys = toy.objects.filter(num = num)
+            for items in toys:
+                scores = items.score
+                times = items.times
+            scores += new_score
+            times += 1
+            toy.objects.filter(num = num).update(score = scores)
+            toy.objects.filter(num = num).update(times = times)
+            message.append(TextMessage(text='感謝您為此商品完成評分！'))
     else:
         message.append(TextMessage(text='測試中'))
             
@@ -381,7 +427,7 @@ def handle_message(event):
                                         title=f'{name}',
                                         text=f'價格：{price}\n推薦指數：{avg_score}',
                                         actions=[
-                                            PostbackTemplateAction(label='為此商品評分' ,data='其他'),
+                                            PostbackTemplateAction(label='為此商品評分' ,data=f'貓抓+{num}+0'),
                                                 ]))
                 message.append(TemplateSendMessage(
                     alt_text='貓抓板',
@@ -402,7 +448,7 @@ def handle_message(event):
                                         title=f'{name}',
                                         text=f'價格：{price}\n推薦指數：{avg_score}',
                                         actions=[
-                                            PostbackTemplateAction(label='為此商品評分' ,data='其他'),
+                                            PostbackTemplateAction(label='為此商品評分' ,data=f'貓屋+{num}+0'),
                                                 ]))
                 message.append(TemplateSendMessage(
                     alt_text='貓抓板',
