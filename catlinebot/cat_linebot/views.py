@@ -307,7 +307,7 @@ def handle_message(event):
                 score = items.score
                 times = items.times
             avg_score = round(score/times, 1)
-            message.append(TextSendMessage(text=f'{name}\n\n價格：{price}\n重量：{grams}\n蛋白質：{protein}\n脂肪：{fat}\n碳水化合物：{carbo}\n磷含量：{phos}\n熱量：{kcal}\n推薦指數：{avg_score}\n為這個商品評分吧',
+            message.append(TextSendMessage(text=f'{name}\n\n價格：{price}\n重量：{grams}\n蛋白質：{protein}\n脂肪：{fat}\n碳水化合物：{carbo}\n磷含量：{phos}\n熱量：{kcal}\n推薦指數：{avg_score}({times})\n為這個商品評分吧',
                         quick_reply=QuickReply(
                         items=[
                             QuickReplyButton(action=PostbackAction(label=f"1{stars}", data=f"乖+{num}+1")),
@@ -346,7 +346,7 @@ def handle_message(event):
                 score = items.score
                 times = items.times
             avg_score = round(score/times, 1)
-            message.append(TextSendMessage(text=f'{name}\n\n價格：{price}\n重量：{grams}\n成分：{material}\n產品配比：{ratio}\n推薦指數：{avg_score}\n為這個商品評分吧',
+            message.append(TextSendMessage(text=f'{name}\n\n價格：{price}\n重量：{grams}\n成分：{material}\n產品配比：{ratio}\n推薦指數：{avg_score}({times})\n為這個商品評分吧',
                         quick_reply=QuickReply(
                         items=[
                             QuickReplyButton(action=PostbackAction(label=f"1{stars}", data=f"pi+{num}+1")),
@@ -386,7 +386,7 @@ def handle_message(event):
                 score = items.score
                 times = items.times
             avg_score = round(score/times, 1)
-            message.append(TextSendMessage(text=f'{name}\n\n價格：{price}\n重量：{grams}\n蛋白質：{protein}\n脂肪：{fat}\n碳水化合物：{carbo}\n磷含量：{phos}\n推薦指數：{avg_score}\n為這個商品評分吧',
+            message.append(TextSendMessage(text=f'{name}\n\n價格：{price}\n重量：{grams}\n蛋白質：{protein}\n脂肪：{fat}\n碳水化合物：{carbo}\n磷含量：{phos}\n推薦指數：{avg_score}({times})\n為這個商品評分吧',
                         quick_reply=QuickReply(
                         items=[
                             QuickReplyButton(action=PostbackAction(label=f"1{stars}", data=f"心+{num}+1")),
@@ -425,7 +425,7 @@ def handle_message(event):
                     columns.append(CarouselColumn(
                                         thumbnail_image_url=f'{merch_url}',
                                         title=f'{name}',
-                                        text=f'價格：{price}\n推薦指數：{avg_score}',
+                                        text=f'價格：{price}\n推薦指數：{avg_score}({times})',
                                         actions=[
                                             PostbackTemplateAction(label='為此商品評分' ,data=f'貓抓+{num}+0'),
                                                 ]))
@@ -446,7 +446,7 @@ def handle_message(event):
                     columns.append(CarouselColumn(
                                         thumbnail_image_url=f'{merch_url}',
                                         title=f'{name}',
-                                        text=f'價格：{price}\n推薦指數：{avg_score}',
+                                        text=f'價格：{price}\n推薦指數：{avg_score}({times})',
                                         actions=[
                                             PostbackTemplateAction(label='為此商品評分' ,data=f'貓屋+{num}+0'),
                                                 ]))
